@@ -20,10 +20,9 @@ const TrainerClasses = (props) => {
   const [pastClassesVisible, setPastClassesVisible] = useState();
   const [isViewParticipantsModalOpen, setIsViewParticipantsModalOpen] =
     useState(false);
-
   const [fitnessClassId, setFitnessClassId] = useState();
-
   const [classes, setClasses] = useState(false);
+  const [page, setPage] = useState(1);
 
   const { time } = useParams();
 
@@ -55,12 +54,14 @@ const TrainerClasses = (props) => {
   const makePreviousClassesVisible = () => {
     setUpcomingClassesVisible(false);
     setPastClassesVisible(true);
+    setPage(1);
     navigate("/trainerclasses/past");
   };
 
   const makeFutureClassesVisible = () => {
     setPastClassesVisible(false);
     setUpcomingClassesVisible(true);
+    setPage(1);
     navigate("/trainerclasses/future");
   };
 
@@ -69,27 +70,36 @@ const TrainerClasses = (props) => {
     setFitnessClassId(fitnessClassId);
   };
 
-  useEffect(() => {
+  const getClasses = async () => {
     const userTk = user.token;
-    console.log(userTk);
-    const getClasses = async () => {
-      try {
-        const res = await axios.get(`/trainer/${time}`, {
-          params: {
-            take: 3,
-            page: 2,
-          },
+    console.log(page);
+    try {
+      const res = await axios.get(`/trainer/${time}`, {
+        params: {
+          take: 3,
+          page,
+        },
 
-          headers: {
-            Authorization: `Bearer ${userTk}`,
-          },
-        });
-        setClasses(res.data);
-        console.log(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+        headers: {
+          Authorization: `Bearer ${userTk}`,
+        },
+      });
+      setClasses(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleChangePage = (event, value) => {
+    setPage(value);
+  };
+
+  useEffect(() => {
+    getClasses();
+  }, [page]);
+
+  useEffect(() => {
     if (time === "past") {
       setUpcomingClassesVisible(false);
       setPastClassesVisible(true);
@@ -183,7 +193,12 @@ const TrainerClasses = (props) => {
           </tbody>
         </table>
         <div className="pagination-container">
-          <Pagination count={10} size={paginationComponentSize} />
+          <Pagination
+            count={10}
+            page={page}
+            size={paginationComponentSize}
+            onChange={handleChangePage}
+          />
         </div>
         <div className="add-fitness-class-container">
           <Fab
