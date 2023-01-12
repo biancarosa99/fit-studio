@@ -24,7 +24,7 @@ const AddFitnessClass = forwardRef((props, ref) => {
     setFitnessClass(event.target.value);
   };
 
-  const addClassHandler = (e) => {
+  const scheduleClassHandler = (e) => {
     e.preventDefault();
     setLocation("");
     setFitnessClass("");
@@ -75,7 +75,7 @@ const AddFitnessClass = forwardRef((props, ref) => {
         <div className="add-class-title-container">
           <h2 className="add-class-title">Schedule a new class</h2>
         </div>
-        <form className="form-container" onSubmit={addClassHandler}>
+        <form className="form-container" onSubmit={scheduleClassHandler}>
           <FormControl fullWidth>
             <InputLabel
               id="demo-simple-select-label"
@@ -186,6 +186,34 @@ const AddFitnessClass = forwardRef((props, ref) => {
               <MenuItem value={"Cycling"}>Cycling</MenuItem>
             </Select>
           </FormControl>
+
+          <FormControl fullWidth>
+            <TextField
+              lid="outlined-basic"
+              type="number"
+              label="Maximum Spots"
+              variant="outlined"
+              InputProps={{ inputProps: { min: 1, max: 50 } }}
+              sx={{
+                ".MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#f45b69 !important",
+                },
+                label: {
+                  color: "#f45b69 !important",
+                },
+                "label.Mui-focused": {
+                  color: "#f45b69 !important",
+                },
+                "&:focus label": {
+                  color: "#f45b69",
+                },
+                ".MuiFormLabel-focus": {
+                  color: "#f45b69 ",
+                },
+              }}
+            />
+          </FormControl>
+
           <FormControl fullWidth>
             <DateTimePicker
               renderInput={(props) => (
