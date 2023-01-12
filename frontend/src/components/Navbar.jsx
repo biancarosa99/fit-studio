@@ -127,7 +127,7 @@ const Navbar = () => {
             REGISTER
           </li>
           <li className={trainerLoggedInClasses}>
-            <a className="anchor" href="/trainerclasses">
+            <a className="anchor" href="/trainerclasses/future">
               MY CLASSES
             </a>
           </li>
@@ -176,7 +176,7 @@ const Navbar = () => {
               REGISTER
             </li>
             <li className={trainerLoggedInClasses}>
-              <a className="mobile-anchor" href="/trainerclasses">
+              <a className="mobile-anchor" href="/trainerclasses/future">
                 MY CLASSES
               </a>
             </li>
