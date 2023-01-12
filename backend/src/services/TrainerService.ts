@@ -93,15 +93,15 @@ export const getTrainerClasses = async (
           },
         },
         order: {
-          date: "ASC",
+          date: "DESC",
         },
         take: +take,
         skip: (+page - 1) * +take,
       });
     const now = dayjs();
-    const result = scheduledClasses.filter((fitnessClass) =>
-      dayjs(fitnessClass.date).isSameOrAfter(now)
-    );
+    const result = scheduledClasses
+      .reverse()
+      .filter((fitnessClass) => dayjs(fitnessClass.date).isSameOrAfter(now));
     return res.status(200).json(result);
   } catch (error) {
     console.log(error);
