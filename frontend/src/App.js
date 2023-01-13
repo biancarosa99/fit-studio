@@ -22,7 +22,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/classesTimetable" element={<SchedulerPage />}></Route>
             <Route
-              path="/trainerclasses"
+              path="/trainerclasses/:time"
               element={<TrainerClassesPage />}
             ></Route>
             <Route path="/myplans" element={<UserPlansPage />}></Route>

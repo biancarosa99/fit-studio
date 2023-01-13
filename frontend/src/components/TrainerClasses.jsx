@@ -6,11 +6,31 @@ import { Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
+import AuthContext from "../context/AuthContext";
+import { useContext } from "react";
+import ViewParticipantsList from "./ViewParticipantsList";
 
 const TrainerClasses = (props) => {
-  const [upcomingClassesVisible, setUpcomingClassesVisible] = useState(true);
-  const [pastClassesVisible, setPastClassesVisible] = useState(false);
+  const { user } = useContext(AuthContext);
+
+  const [upcomingClassesVisible, setUpcomingClassesVisible] = useState();
+  const [pastClassesVisible, setPastClassesVisible] = useState();
+  const [isViewParticipantsModalOpen, setIsViewParticipantsModalOpen] =
+    useState(false);
+  const [fitnessClassId, setFitnessClassId] = useState();
+  const [classes, setClasses] = useState(false);
+  const [page, setPage] = useState(1);
+
+  const { time } = useParams();
+
+  const dayjs = require("dayjs");
+
   const isMobile = useMediaQuery({ query: "(max-width: 548px)" });
+
+  const navigate = useNavigate();
 
   const paginationComponentSize = isMobile ? "small" : "large";
 
@@ -27,15 +47,68 @@ const TrainerClasses = (props) => {
     zIndex: 0,
   };
 
+  const getFormattedDate = (date) => {
+    return dayjs(date).format("DD/MM/YYYY H:mm");
+  };
+
   const makePreviousClassesVisible = () => {
     setUpcomingClassesVisible(false);
     setPastClassesVisible(true);
+    setPage(1);
+    navigate("/trainerclasses/past");
   };
 
   const makeFutureClassesVisible = () => {
     setPastClassesVisible(false);
     setUpcomingClassesVisible(true);
+    setPage(1);
+    navigate("/trainerclasses/future");
   };
+
+  const openViewParticipantsList = (fitnessClassId) => {
+    setIsViewParticipantsModalOpen(true);
+    setFitnessClassId(fitnessClassId);
+  };
+
+  const getClasses = async () => {
+    const userTk = user.token;
+    console.log(page);
+    try {
+      const res = await axios.get(`/trainer/${time}`, {
+        params: {
+          take: 5,
+          page,
+        },
+
+        headers: {
+          Authorization: `Bearer ${userTk}`,
+        },
+      });
+      setClasses(res.data);
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleChangePage = (event, value) => {
+    setPage(value);
+  };
+
+  useEffect(() => {
+    getClasses();
+  }, [page]);
+
+  useEffect(() => {
+    if (time === "past") {
+      setUpcomingClassesVisible(false);
+      setPastClassesVisible(true);
+    } else {
+      setPastClassesVisible(false);
+      setUpcomingClassesVisible(true);
+    }
+    getClasses();
+  }, [time]);
 
   return (
     <React.Fragment>
@@ -89,93 +162,43 @@ const TrainerClasses = (props) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td data-label="Date" className="fitness-class-start-hour">
-                12/12/20 10:00
-              </td>
-              <td data-label="Class">TABATA FITNESS</td>
-              <td data-label="Location">FitHub1</td>
-              <td>
-                <button
-                  className="view-participants-button"
-                  onClick={props.openViewParticipantsList}
-                >
-                  View Particiants
-                </button>
-              </td>
-            </tr>
+            {classes &&
+              classes.map((scheduledClass, index) => {
+                const classDate = getFormattedDate(scheduledClass.date);
 
-            <tr>
-              <td data-label="Date" className="fitness-class-start-hour">
-                12/12/20 10:00
-              </td>
-              <td data-label="Class">TABATA FITNESS</td>
-              <td data-label="Location">FitHub1</td>
-              <td>
-                <button
-                  onClick={props.openViewParticipantsList}
-                  className="view-participants-button"
-                >
-                  View Particiants
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td data-label="Date" className="fitness-class-start-hour">
-                12/12/20 10:00
-              </td>
-              <td data-label="Class">TABATA FITNESS</td>
-              <td data-label="Location">FitHub1</td>
-              <td>
-                <button className="view-participants-button">
-                  View Particiants
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td data-label="Date" className="fitness-class-start-hour">
-                12/12/20 10:00
-              </td>
-              <td data-label="Class">TABATA FITNESS</td>
-              <td data-label="Location">FitHub1</td>
-              <td>
-                <button className="view-participants-button">
-                  View Particiants
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td data-label="Date" className="fitness-class-start-hour">
-                12/12/20 10:00
-              </td>
-              <td data-label="Class">TABATA FITNESS</td>
-              <td data-label="Location">FitHub1</td>
-              <td>
-                <button className="view-participants-button">
-                  View Particiants
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td data-label="Date" className="fitness-class-start-hour">
-                12/12/20 10:00
-              </td>
-              <td data-label="Class">TABATA FITNESS</td>
-              <td data-label="Location">FitHub1</td>
-              <td>
-                <button className="view-participants-button">
-                  View Particiants
-                </button>
-              </td>
-            </tr>
+                return (
+                  <tr key={index}>
+                    <td data-label="Date" className="fitness-class-start-hour">
+                      {classDate}
+                    </td>
+                    <td data-label="Class">
+                      {scheduledClass.fitnessClass.name}
+                    </td>
+                    <td data-label="Location">
+                      {scheduledClass.location.name}
+                    </td>
+                    <td>
+                      <button
+                        className="view-participants-button"
+                        onClick={() =>
+                          openViewParticipantsList(scheduledClass.id)
+                        }
+                      >
+                        View Particiants
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
         <div className="pagination-container">
-          <Pagination count={10} size={paginationComponentSize} />
+          <Pagination
+            count={10}
+            page={page}
+            size={paginationComponentSize}
+            onChange={handleChangePage}
+          />
         </div>
         <div className="add-fitness-class-container">
           <Fab
@@ -187,6 +210,15 @@ const TrainerClasses = (props) => {
           </Fab>
         </div>
       </div>
+      {isViewParticipantsModalOpen && (
+        <ViewParticipantsList
+          closeViewParticipantsList={() =>
+            setIsViewParticipantsModalOpen(false)
+          }
+          scheduledClassId={fitnessClassId}
+          tkUser={user.token}
+        />
+      )}
     </React.Fragment>
   );
 };

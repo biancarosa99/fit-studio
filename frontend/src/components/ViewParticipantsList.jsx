@@ -1,14 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/ViewParticipantsList.css";
 import Modal from "../UI/Modal";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-
-const array = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-];
+import { useEffect } from "react";
+import axios from "axios";
 
 const ViewParticipantsList = (props) => {
+  const [attendants, setAttendants] = useState([]);
+
+  useEffect(() => {
+    const getAttendants = async (scheduledClassId) => {
+      try {
+        const res = await axios.get(`/schedule/users/${scheduledClassId}`, {
+          headers: {
+            Authorization: `Bearer ${props.tkUser}`,
+          },
+        });
+
+        setAttendants(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getAttendants(props.scheduledClassId);
+  }, []);
+
   return (
     <Modal>
       <div className="participants-container">
@@ -24,13 +42,14 @@ const ViewParticipantsList = (props) => {
 
         <div className="participants-list-container">
           <div className="participants">
-            {array.map((participant, index) => {
-              return (
-                <div className="participant-name" key={index}>
-                  element
-                </div>
-              );
-            })}
+            {attendants &&
+              attendants.map((attendant, index) => {
+                return (
+                  <div className="participant-name" key={index}>
+                    {attendant.firstname} {attendant.lastname}
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>

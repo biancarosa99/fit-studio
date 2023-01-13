@@ -26,7 +26,6 @@ const FitnessScheduler = (props) => {
     }
   };
 
-  ////vezi daca trebe sa golesti array-ul pt cand se schimba locatia
   const getClassesForEachWeekDay = (schedule) => {
     let scheduleByDays = {};
 
@@ -43,11 +42,7 @@ const FitnessScheduler = (props) => {
 
   const getFitnessSchedule = async () => {
     try {
-      const res = await axios.get("/schedule/", {
-        params: {
-          locationId: timetableLocation.id,
-        },
-      });
+      const res = await axios.get(`/schedule/${timetableLocation.id}`);
 
       const schedule = res.data;
 
@@ -62,8 +57,7 @@ const FitnessScheduler = (props) => {
 
   useEffect(() => {
     getLocations();
-    getFitnessSchedule();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     getFitnessSchedule();
