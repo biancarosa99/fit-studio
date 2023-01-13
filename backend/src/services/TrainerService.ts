@@ -6,6 +6,7 @@ import { checkScheduledClassAvailability } from "../utils/helperFunctions";
 import * as dayjs from "dayjs";
 dayjs().format();
 import isSameOrAfter = require("dayjs/plugin/isSameOrAfter");
+import { LessThan, MoreThan, MoreThanOrEqual } from "typeorm";
 dayjs.extend(isSameOrAfter);
 
 export const createFitnessClass = async (
@@ -84,6 +85,7 @@ export const getTrainerClasses = async (
   const { tkUser } = req;
   const { take, page } = req.query;
   try {
+    const now = dayjs();
     const [scheduledClasses, total] = await myDataSource
       .getRepository(ScheduledClass)
       .findAndCount({
@@ -91,6 +93,7 @@ export const getTrainerClasses = async (
           trainer: {
             id: tkUser.id,
           },
+          date: MoreThanOrEqual(now.toDate()),
         },
         order: {
           date: "ASC",
@@ -98,11 +101,8 @@ export const getTrainerClasses = async (
         take: +take,
         skip: (+page - 1) * +take,
       });
-    const now = dayjs();
-    const result = scheduledClasses.filter((fitnessClass) =>
-      dayjs(fitnessClass.date).isSameOrAfter(now)
-    );
-    return res.status(200).json(result);
+
+    return res.status(200).json({ scheduledClasses, total });
   } catch (error) {
     console.log(error);
     return res.status(400).json("Something went wrong!");
@@ -116,6 +116,7 @@ export const getPastTrainerClasses = async (
   const { tkUser } = req;
   const { take, page } = req.query;
   try {
+    const now = dayjs();
     const [scheduledClasses, total] = await myDataSource
       .getRepository(ScheduledClass)
       .findAndCount({
@@ -123,6 +124,7 @@ export const getPastTrainerClasses = async (
           trainer: {
             id: tkUser.id,
           },
+          date: LessThan(now.toDate()),
         },
         order: {
           date: "ASC",
@@ -130,11 +132,8 @@ export const getPastTrainerClasses = async (
         take: +take,
         skip: (+page - 1) * +take,
       });
-    const now = dayjs();
-    const result = scheduledClasses.filter((fitnessClass) =>
-      dayjs(now).isSameOrAfter(fitnessClass.date)
-    );
-    return res.status(200).json(result);
+
+    return res.status(200).json({ scheduledClasses, total });
   } catch (error) {
     console.log(error);
     return res.status(400).json("Something went wrong!");

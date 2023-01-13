@@ -13,8 +13,6 @@ dayjs.extend(isBetween);
 dayjs.extend(duration);
 dayjs.extend(weekday);
 
-// adauga relations la query
-// pe front iti iei frumos day.js si ca sa ti puna la monday tuesday etc te joci cu dayjsu
 export const getCurrentWeekSchedule = async (req: Request, res: Response) => {
   const { locationId } = req.params;
   try {

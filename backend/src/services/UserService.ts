@@ -16,6 +16,7 @@ dayjs().format();
 import duration = require("dayjs/plugin/duration");
 dayjs.extend(duration);
 import isBetween = require("dayjs/plugin/isBetween");
+import { LessThan, MoreThanOrEqual } from "typeorm";
 dayjs.extend(isBetween);
 
 export const getUser = async (req: AuthenticatedRequest, res: Response) => {
@@ -176,12 +177,16 @@ export const getUserAppointments = async (
   const { tkUser } = req;
   const { take, page } = req.query;
   try {
-    const scheduledAppointments = await myDataSource
+    const now = dayjs();
+    const [scheduledAppointments, total] = await myDataSource
       .getRepository(Appointment)
-      .find({
+      .findAndCount({
         where: {
           user: {
             id: tkUser.id,
+          },
+          scheduledClass: {
+            date: MoreThanOrEqual(now.toDate()),
           },
         },
         order: {
@@ -192,11 +197,8 @@ export const getUserAppointments = async (
         take: +take,
         skip: (+page - 1) * +take,
       });
-    const now = dayjs();
-    const result = scheduledAppointments.filter((appointment) =>
-      dayjs(appointment.scheduledClass.date).isSameOrAfter(now)
-    );
-    return res.status(200).json(result);
+
+    return res.status(200).json({ scheduledAppointments, total });
   } catch (error) {
     console.log(error);
     return res.status(400).json("Something went wrong!");
@@ -210,12 +212,16 @@ export const getPastUserAppointments = async (
   const { tkUser } = req;
   const { take, page } = req.query;
   try {
-    const scheduledAppointments = await myDataSource
+    const now = dayjs();
+    const [scheduledAppointments, total] = await myDataSource
       .getRepository(Appointment)
       .find({
         where: {
           user: {
             id: tkUser.id,
+          },
+          scheduledClass: {
+            date: LessThan(now.toDate()),
           },
         },
         order: {
@@ -226,11 +232,8 @@ export const getPastUserAppointments = async (
         take: +take,
         skip: (+page - 1) * +take,
       });
-    const now = dayjs();
-    const result = scheduledAppointments.filter((appointment) =>
-      dayjs(now).isSameOrAfter(appointment.scheduledClass.date)
-    );
-    return res.status(200).json(result);
+
+    return res.status(200).json({ scheduledAppointments, total });
   } catch (error) {
     console.log(error);
     return res.status(400).json("Something went wrong!");
