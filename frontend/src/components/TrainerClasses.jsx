@@ -76,7 +76,7 @@ const TrainerClasses = (props) => {
     try {
       const res = await axios.get(`/trainer/${time}`, {
         params: {
-          take: 3,
+          take: 5,
           page,
         },
 

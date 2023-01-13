@@ -6,15 +6,29 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import "../styles/AddFitnessClass.css";
+import axios from "axios";
+import { useEffect } from "react";
+import AuthContext from "../context/AuthContext";
+import { useContext } from "react";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+
 // import { useForm } from "react-hook-form";
 // import { useYupValidationResolver } from "../validations/YupResolver";
 // import { scheduleClassValidationSchema } from "../validations/ScheduleClassValidation";
 // import { useEffect } from "react";
 
 const AddFitnessClass = forwardRef((props, ref) => {
+  const { user } = useContext(AuthContext);
+
   const [location, setLocation] = useState("");
   const [fitnessClass, setFitnessClass] = useState("");
+  const [maxSpots, setMaxSpots] = useState("");
   const [date, setDate] = useState("");
+
+  const [dbLocations, setDbLocations] = useState([]);
+  const [dbFitnessClasses, setDbFitnessClasses] = useState([]);
+
+  const dayjs = require("dayjs");
 
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
@@ -24,16 +38,70 @@ const AddFitnessClass = forwardRef((props, ref) => {
     setFitnessClass(event.target.value);
   };
 
-  const scheduleClassHandler = (e) => {
+  const scheduleClassHandler = async (e) => {
     e.preventDefault();
+
+    try {
+      const userTk = user.token;
+      console.log(fitnessClass.id);
+      const res = await axios.post(
+        "/trainer/create",
+        {
+          date,
+          remaining_spots: maxSpots,
+          fitnessClassId: fitnessClass,
+          locationId: location,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userTk}`,
+          },
+        }
+      );
+      props.sucsessfullScheduleNewClass();
+    } catch (err) {
+      console.log(err);
+    }
+
     setLocation("");
     setFitnessClass("");
     setDate("");
-    props.sucsessfullScheduleNewClass();
-    console.log("form subbmited");
-    console.log(date);
+
+    console.log(
+      "form subbmited: " +
+        fitnessClass +
+        " " +
+        location +
+        " " +
+        maxSpots +
+        " " +
+        date
+    );
   };
 
+  useEffect(() => {
+    const getLocations = async () => {
+      try {
+        const res = await axios.get("/location/");
+        setDbLocations(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const getFitnessClasses = async () => {
+      try {
+        const userTk = user.token;
+        const res = await axios.get("/fitnessClass/");
+        setDbFitnessClasses(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getLocations();
+    getFitnessClasses();
+  }, []);
   // const resolver = useYupValidationResolver(scheduleClassValidationSchema);
 
   // const {
@@ -70,7 +138,7 @@ const AddFitnessClass = forwardRef((props, ref) => {
   // };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <div className="add-class-container" ref={ref}>
         <div className="add-class-title-container">
           <h2 className="add-class-title">Schedule a new class</h2>
@@ -124,9 +192,12 @@ const AddFitnessClass = forwardRef((props, ref) => {
                 },
               }}
             >
-              <MenuItem value={"FitHub1"}>FitHub 1</MenuItem>
-              <MenuItem value={"FitHub2"}>FitHub 2</MenuItem>
-              <MenuItem value={"FitHub3"}>FitHub 3</MenuItem>
+              {dbLocations &&
+                dbLocations.map((dbLocation, index) => (
+                  <MenuItem key={index} value={dbLocation.id}>
+                    {dbLocation.name}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
 
@@ -179,11 +250,12 @@ const AddFitnessClass = forwardRef((props, ref) => {
                 },
               }}
             >
-              <MenuItem value={"Kangoo Jumps"}>Kangoo Jumps</MenuItem>
-              <MenuItem value={"Tabata Fitness"}>Tabata Fitness</MenuItem>
-              <MenuItem value={"Fitbalance"}>Fitbalance</MenuItem>
-              <MenuItem value={"Legs&Butt"}>Legs&butt</MenuItem>
-              <MenuItem value={"Cycling"}>Cycling</MenuItem>
+              {dbFitnessClasses &&
+                dbFitnessClasses.map((dbFitnessClass, index) => (
+                  <MenuItem key={index} value={dbFitnessClass.id}>
+                    {dbFitnessClass.name}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
 
@@ -193,6 +265,8 @@ const AddFitnessClass = forwardRef((props, ref) => {
               type="number"
               label="Maximum Spots"
               variant="outlined"
+              value={maxSpots}
+              onChange={(e) => setMaxSpots(e.target.value)}
               InputProps={{ inputProps: { min: 1, max: 50 } }}
               sx={{
                 ".MuiOutlinedInput-notchedOutline": {

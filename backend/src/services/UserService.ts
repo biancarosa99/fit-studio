@@ -186,18 +186,16 @@ export const getUserAppointments = async (
         },
         order: {
           scheduledClass: {
-            date: "DESC",
+            date: "ASC",
           },
         },
         take: +take,
         skip: (+page - 1) * +take,
       });
     const now = dayjs();
-    const result = scheduledAppointments
-      .reverse()
-      .filter((appointment) =>
-        dayjs(appointment.scheduledClass.date).isSameOrAfter(now)
-      );
+    const result = scheduledAppointments.filter((appointment) =>
+      dayjs(appointment.scheduledClass.date).isSameOrAfter(now)
+    );
     return res.status(200).json(result);
   } catch (error) {
     console.log(error);
