@@ -23,9 +23,6 @@ export default class ScheduledClass extends BaseEntity {
   @Column({ type: "timestamptz" })
   date: Date;
 
-  // @Column()
-  // available_spots: number;
-
   @Column()
   max_spots: number;
 

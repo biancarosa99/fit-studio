@@ -23,6 +23,7 @@ const TrainerClasses = (props) => {
   const [fitnessClassId, setFitnessClassId] = useState();
   const [classes, setClasses] = useState(false);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(10);
 
   const { time } = useParams();
 
@@ -84,8 +85,9 @@ const TrainerClasses = (props) => {
           Authorization: `Bearer ${userTk}`,
         },
       });
-      setClasses(res.data);
-      console.log(res.data);
+      setClasses(res.data.scheduledClasses);
+      setTotalPages(Math.ceil(res.data.total / 5));
+      console.log(res);
     } catch (err) {
       console.log(err);
     }
@@ -194,7 +196,7 @@ const TrainerClasses = (props) => {
         </table>
         <div className="pagination-container">
           <Pagination
-            count={10}
+            count={totalPages}
             page={page}
             size={paginationComponentSize}
             onChange={handleChangePage}
