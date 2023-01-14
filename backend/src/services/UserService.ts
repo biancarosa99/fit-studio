@@ -260,6 +260,7 @@ export const getActiveSubscription = async (
       });
 
     if (
+      activeSubscription.length > 0 &&
       dayjs().isBetween(
         activeSubscription[0].start_date,
         activeSubscription[0].end_date
