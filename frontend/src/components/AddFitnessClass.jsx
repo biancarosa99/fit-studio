@@ -2,7 +2,6 @@ import React, { forwardRef } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import "../styles/AddFitnessClass.css";
@@ -28,8 +27,6 @@ const AddFitnessClass = forwardRef((props, ref) => {
   const [dbLocations, setDbLocations] = useState([]);
   const [dbFitnessClasses, setDbFitnessClasses] = useState([]);
 
-  const dayjs = require("dayjs");
-
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
   };
@@ -43,8 +40,7 @@ const AddFitnessClass = forwardRef((props, ref) => {
 
     try {
       const userTk = user.token;
-      console.log(fitnessClass.id);
-      const res = await axios.post(
+      await axios.post(
         "/trainer/create",
         {
           date,
@@ -58,14 +54,10 @@ const AddFitnessClass = forwardRef((props, ref) => {
           },
         }
       );
-      props.sucsessfullScheduleNewClass();
+      props.successfulScheduleNewClassHandler();
     } catch (err) {
-      console.log(err);
+      props.unsuccessfulScheduleNewClassHandler(err.response.data);
     }
-
-    setLocation("");
-    setFitnessClass("");
-    setDate("");
 
     console.log(
       "form subbmited: " +

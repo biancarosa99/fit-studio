@@ -6,15 +6,17 @@ import SnackBar from "../UI/SnackBar";
 const TrainerClassesPage = () => {
   const [isAddClassVisible, setIsAddClassVisible] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
 
-  const ref = useRef("");
-
-  const snackbarMessage = "New class scheduled successfully!";
+  const addClassRef = useRef("");
+  const classesTableRef = useRef("");
 
   useEffect(() => {
-    const div = ref.current;
-    if (div) {
-      ref.current.scrollIntoView({ behavior: "smooth" });
+    if (addClassRef.current) {
+      addClassRef.current.scrollIntoView({ behavior: "smooth" });
+    } else if (classesTableRef.current) {
+      classesTableRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [isAddClassVisible]);
 
@@ -26,19 +28,34 @@ const TrainerClassesPage = () => {
     setOpenSnackbar(false);
   };
 
-  const handleSucsessfullScheduleNewClass = () => {
+  const successfulScheduleNewClassHandler = () => {
     handleToggleAddClass();
+    setSnackbarMessage("New class scheduled successfully!");
+    setSnackbarSeverity("success");
     setOpenSnackbar(true);
     setTimeout(() => setOpenSnackbar(false), 6000);
   };
 
+  const unsuccessfulScheduleNewClassHandler = (errorMessage) => {
+    console.log("open error snackbar: " + errorMessage);
+    setSnackbarMessage(errorMessage);
+    setSnackbarSeverity("error");
+    setOpenSnackbar(true);
+    setTimeout(() => setOpenSnackbar(false), 6000);
+  };
   return (
     <React.Fragment>
-      <TrainerClasses toggleAddClass={handleToggleAddClass} />
+      <TrainerClasses
+        ref={classesTableRef}
+        toggleAddClass={handleToggleAddClass}
+      />
       {isAddClassVisible && (
         <AddFitnessClass
-          ref={ref}
-          sucsessfullScheduleNewClass={handleSucsessfullScheduleNewClass}
+          ref={addClassRef}
+          successfulScheduleNewClassHandler={successfulScheduleNewClassHandler}
+          unsuccessfulScheduleNewClassHandler={
+            unsuccessfulScheduleNewClassHandler
+          }
         />
       )}
 
@@ -46,7 +63,7 @@ const TrainerClassesPage = () => {
         open={openSnackbar}
         closeSnackbarHandler={closeSnackbarHandler}
         message={snackbarMessage}
-        severity="success"
+        severity={snackbarSeverity}
       />
     </React.Fragment>
   );

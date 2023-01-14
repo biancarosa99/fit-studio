@@ -12,8 +12,9 @@ import axios from "axios";
 import AuthContext from "../context/AuthContext";
 import { useContext } from "react";
 import ViewParticipantsList from "./ViewParticipantsList";
+import { forwardRef } from "react";
 
-const TrainerClasses = (props) => {
+const TrainerClasses = forwardRef((props, ref) => {
   const { user } = useContext(AuthContext);
 
   const [upcomingClassesVisible, setUpcomingClassesVisible] = useState();
@@ -73,7 +74,6 @@ const TrainerClasses = (props) => {
 
   const getClasses = async () => {
     const userTk = user.token;
-    console.log(page);
     try {
       const res = await axios.get(`/trainer/${time}`, {
         params: {
@@ -87,7 +87,6 @@ const TrainerClasses = (props) => {
       });
       setClasses(res.data.scheduledClasses);
       setTotalPages(Math.ceil(res.data.total / 5));
-      console.log(res);
     } catch (err) {
       console.log(err);
     }
@@ -114,7 +113,7 @@ const TrainerClasses = (props) => {
 
   return (
     <React.Fragment>
-      <div className="trainer-table-actions-container">
+      <div className="trainer-table-actions-container" ref={ref}>
         <div className="table-title-container">
           <h3 className="table-title">
             {upcomingClassesVisible && "UPCOMING CLASSES"}
@@ -223,6 +222,6 @@ const TrainerClasses = (props) => {
       )}
     </React.Fragment>
   );
-};
+});
 
 export default TrainerClasses;
