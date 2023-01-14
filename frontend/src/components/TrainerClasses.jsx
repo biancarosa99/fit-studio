@@ -98,6 +98,7 @@ const TrainerClasses = forwardRef((props, ref) => {
 
   useEffect(() => {
     getClasses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   useEffect(() => {
@@ -109,6 +110,7 @@ const TrainerClasses = forwardRef((props, ref) => {
       setUpcomingClassesVisible(true);
     }
     getClasses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [time]);
 
   return (

@@ -83,7 +83,6 @@ const AddFitnessClass = forwardRef((props, ref) => {
 
     const getFitnessClasses = async () => {
       try {
-        const userTk = user.token;
         const res = await axios.get("/fitnessClass/");
         setDbFitnessClasses(res.data);
       } catch (err) {
