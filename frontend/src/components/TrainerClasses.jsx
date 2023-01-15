@@ -22,7 +22,7 @@ const TrainerClasses = forwardRef((props, ref) => {
   const [isViewParticipantsModalOpen, setIsViewParticipantsModalOpen] =
     useState(false);
   const [fitnessClassId, setFitnessClassId] = useState();
-  const [classes, setClasses] = useState(false);
+  const [classes, setClasses] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
 
@@ -85,6 +85,7 @@ const TrainerClasses = forwardRef((props, ref) => {
           Authorization: `Bearer ${userTk}`,
         },
       });
+      console.log(res.data);
       setClasses(res.data.scheduledClasses);
       setTotalPages(Math.ceil(res.data.total / 5));
     } catch (err) {

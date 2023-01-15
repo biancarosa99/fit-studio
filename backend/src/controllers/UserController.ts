@@ -19,7 +19,7 @@ router.delete(
   verifyToken,
   removeAppointment
 ); // remove an appointment to a scheduled class
-router.get("/user/appointment", verifyToken, getUserAppointments); // get all the upcoming scheduled appointments for a user
+router.get("/user/appointment/future", verifyToken, getUserAppointments); // get all the upcoming scheduled appointments for a user
 router.get("/user/appointment/past", verifyToken, getPastUserAppointments); // get all the past appointments for a user
 router.get("/user/subscription/", verifyToken, getActiveSubscription); // get active subscription for a user
 

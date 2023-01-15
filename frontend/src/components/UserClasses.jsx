@@ -18,7 +18,7 @@ const UserFutureClasses = (props) => {
   const [upcomingClassesVisible, setUpcomingClassesVisible] = useState(true);
   const [pastClassesVisible, setPastClassesVisible] = useState(false);
   const [fitnessClassId, setFitnessClassId] = useState();
-  const [classes, setClasses] = useState(false);
+  const [classes, setClasses] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -79,12 +79,11 @@ const UserFutureClasses = (props) => {
           Authorization: `Bearer ${userTk}`,
         },
       });
-      if (res.data?.scheduledAppointments?.length > 0) {
-        console.log(res?.data?.scheduledAppointments);
-        setClasses(res?.data?.scheduledAppointments);
-        setTotalPages(Math.ceil(res?.data?.total / 5));
+      console.log(res.data.scheduledAppointments);
+      setClasses(res.data.scheduledAppointments);
+      if (res.data.scheduledAppointments.length > 0) {
+        setTotalPages(Math.ceil(res.data.total / 5));
       } else {
-        setClasses([]);
         setTotalPages(1);
       }
     } catch (err) {
