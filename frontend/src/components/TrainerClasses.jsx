@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useImperativeHandle, useState } from "react";
 import "../styles/TrainerClasses.css";
 import Pagination from "@mui/material/Pagination";
 import { useMediaQuery } from "react-responsive";
@@ -27,6 +27,8 @@ const TrainerClasses = forwardRef((props, ref) => {
   const [totalPages, setTotalPages] = useState(10);
 
   const { time } = useParams();
+
+  const { classesTableRef, refreshClassesRef } = ref;
 
   const dayjs = require("dayjs");
 
@@ -114,9 +116,13 @@ const TrainerClasses = forwardRef((props, ref) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [time]);
 
+  useImperativeHandle(refreshClassesRef, () => ({
+    getClasses,
+  }));
+
   return (
     <React.Fragment>
-      <div className="trainer-table-actions-container" ref={ref}>
+      <div className="trainer-table-actions-container" ref={classesTableRef}>
         <div className="table-title-container">
           <h3 className="table-title">
             {upcomingClassesVisible && "UPCOMING CLASSES"}

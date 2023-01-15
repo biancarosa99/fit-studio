@@ -11,6 +11,7 @@ const TrainerClassesPage = () => {
 
   const addClassRef = useRef("");
   const classesTableRef = useRef("");
+  const refreshClassesRef = useRef("");
 
   useEffect(() => {
     if (addClassRef.current) {
@@ -34,6 +35,7 @@ const TrainerClassesPage = () => {
     setSnackbarSeverity("success");
     setOpenSnackbar(true);
     setTimeout(() => setOpenSnackbar(false), 6000);
+    refreshClassesRef.current.getClasses();
   };
 
   const unsuccessfulScheduleNewClassHandler = (errorMessage) => {
@@ -43,10 +45,11 @@ const TrainerClassesPage = () => {
     setOpenSnackbar(true);
     setTimeout(() => setOpenSnackbar(false), 6000);
   };
+
   return (
     <React.Fragment>
       <TrainerClasses
-        ref={classesTableRef}
+        ref={{ classesTableRef, refreshClassesRef }}
         toggleAddClass={handleToggleAddClass}
       />
       {isAddClassVisible && (

@@ -18,7 +18,6 @@ const UserFutureClasses = forwardRef((props, ref) => {
   const { user } = useContext(AuthContext);
   const [upcomingClassesVisible, setUpcomingClassesVisible] = useState(true);
   const [pastClassesVisible, setPastClassesVisible] = useState(false);
-  const [fitnessClassId, setFitnessClassId] = useState();
   const [classes, setClasses] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -95,6 +94,7 @@ const UserFutureClasses = forwardRef((props, ref) => {
   useEffect(() => {
     console.log("time changed");
     getClasses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [time]);
 
   useImperativeHandle(ref, () => ({
