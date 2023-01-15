@@ -152,14 +152,16 @@ const UserFutureClasses = forwardRef((props, ref) => {
               <th>Date</th>
               <th>Class</th>
               <th>Location</th>
-              <th>Actions</th>
+              {time === "future" && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
             {classes &&
               classes.map((appointment, index) => {
                 const appointmentId = appointment.id;
-                const appointmentDate = getFormattedDate(appointment.date);
+                const appointmentDate = getFormattedDate(
+                  appointment.scheduledClass.date
+                );
                 const scheduledClassName =
                   appointment.scheduledClass.fitnessClass.name;
                 const scheduledClassLocation =
@@ -172,21 +174,23 @@ const UserFutureClasses = forwardRef((props, ref) => {
                     </td>
                     <td data-label="Class">{scheduledClassName}</td>
                     <td data-label="Location">{scheduledClassLocation}</td>
-                    <td>
-                      <button
-                        className="cancel-class-button"
-                        onClick={() =>
-                          props.openCancelClassModal(
-                            scheduledClassName,
-                            scheduledClassLocation,
-                            appointmentDate,
-                            appointmentId
-                          )
-                        }
-                      >
-                        Cancel Class
-                      </button>
-                    </td>
+                    {time === "future" && (
+                      <td>
+                        <button
+                          className="cancel-class-button"
+                          onClick={() =>
+                            props.openCancelClassModal(
+                              scheduledClassName,
+                              scheduledClassLocation,
+                              appointmentDate,
+                              appointmentId
+                            )
+                          }
+                        >
+                          Cancel Class
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 );
               })}
