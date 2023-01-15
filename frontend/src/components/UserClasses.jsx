@@ -153,23 +153,31 @@ const UserFutureClasses = (props) => {
           <tbody>
             {classes &&
               classes.map((appointment, index) => {
+                const appointmentId = appointment.id;
                 const appointmentDate = getFormattedDate(appointment.date);
+                const scheduledClassName =
+                  appointment.scheduledClass.fitnessClass.name;
+                const scheduledClassLocation =
+                  appointment.scheduledClass.location.name;
 
                 return (
                   <tr key={index}>
                     <td data-label="Date" className="fitness-class-start-hour">
                       {appointmentDate}
                     </td>
-                    <td data-label="Class">
-                      {appointment.scheduledClass.fitnessClass.name}
-                    </td>
-                    <td data-label="Location">
-                      {appointment.scheduledClass.location.name}
-                    </td>
+                    <td data-label="Class">{scheduledClassName}</td>
+                    <td data-label="Location">{scheduledClassLocation}</td>
                     <td>
                       <button
                         className="cancel-class-button"
-                        onClick={props.openCancelClassModal}
+                        onClick={() =>
+                          props.openCancelClassModal(
+                            scheduledClassName,
+                            scheduledClassLocation,
+                            appointmentDate,
+                            appointmentId
+                          )
+                        }
                       >
                         Cancel Class
                       </button>
