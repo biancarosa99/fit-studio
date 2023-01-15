@@ -16,13 +16,14 @@ const TrainerClassesPage = () => {
   useEffect(() => {
     if (addClassRef.current) {
       addClassRef.current.scrollIntoView({ behavior: "smooth" });
-    } else if (classesTableRef.current) {
-      classesTableRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [isAddClassVisible]);
 
   const handleToggleAddClass = () => {
     setIsAddClassVisible((prev) => !prev);
+    if (classesTableRef.current) {
+      classesTableRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const closeSnackbarHandler = () => {
