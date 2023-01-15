@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import CancelAppointmentModal from "../components/CancelAppointmentModal";
 import UserClasses from "../components/UserClasses";
 import UserSubscription from "../components/UserSubscription";
@@ -11,6 +11,8 @@ const UserPlansPage = () => {
     openSuccessfulCancelAppointmentSnackbar,
     setOpenSuccessfulCancelAppointmentSnackbar,
   ] = useState(false);
+
+  const childRef = useRef();
 
   const openCancelClassModalHandler = (
     scheduledClassName,
@@ -35,12 +37,16 @@ const UserPlansPage = () => {
     closeCancelClassModalHandler();
     setOpenSuccessfulCancelAppointmentSnackbar(true);
     setTimeout(() => setOpenSuccessfulCancelAppointmentSnackbar(false), 6000);
+    childRef.current.getClasses();
   };
 
   return (
     <React.Fragment>
       <UserSubscription />
-      <UserClasses openCancelClassModal={openCancelClassModalHandler} />
+      <UserClasses
+        ref={childRef}
+        openCancelClassModal={openCancelClassModalHandler}
+      />
       {isCanceClassModalOpen && (
         <CancelAppointmentModal
           closeCancelClassModal={closeCancelClassModalHandler}

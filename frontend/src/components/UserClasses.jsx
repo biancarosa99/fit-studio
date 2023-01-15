@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useImperativeHandle } from "react";
 import "../styles/UserClasses.css";
 import Pagination from "@mui/material/Pagination";
 import { useMediaQuery } from "react-responsive";
@@ -8,12 +8,13 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import axios from "axios";
+import { forwardRef } from "react";
 
 // import { Fab } from "@mui/material";
 // import AddIcon from "@mui/icons-material/Add";
 // import zIndex from "@mui/material/styles/zIndex";
 
-const UserFutureClasses = (props) => {
+const UserFutureClasses = forwardRef((props, ref) => {
   const { user } = useContext(AuthContext);
   const [upcomingClassesVisible, setUpcomingClassesVisible] = useState(true);
   const [pastClassesVisible, setPastClassesVisible] = useState(false);
@@ -95,6 +96,10 @@ const UserFutureClasses = (props) => {
     console.log("time changed");
     getClasses();
   }, [time]);
+
+  useImperativeHandle(ref, () => ({
+    getClasses,
+  }));
 
   return (
     <React.Fragment>
@@ -198,6 +203,6 @@ const UserFutureClasses = (props) => {
       </div>
     </React.Fragment>
   );
-};
+});
 
 export default UserFutureClasses;
