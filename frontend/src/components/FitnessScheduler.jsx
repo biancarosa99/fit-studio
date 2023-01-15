@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../styles/FitnessScheduler.css";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
+import LocationContext from "../context/LocationContext";
 
 ////useCallBack for getFitnessSchedule to incliude it in the dep array (acum nu e warning pt ca e diabled eslint)
 
 const FitnessScheduler = (props) => {
+  const { currentLocation, setCurrentLocation } = useContext(LocationContext);
   const [, setIsDropDownOpen] = useState(false);
   const [locations, setLocations] = useState([]);
-  const [timetableLocation, setTimetableLocation] = useState("");
   const [fitnessSchedule, setFitnessSchedule] = useState({});
 
   const dayjs = require("dayjs");
@@ -22,8 +23,6 @@ const FitnessScheduler = (props) => {
     try {
       const res = await axios.get("/location/");
       setLocations(res.data);
-      const initialFitnessScheduleLocation = res.data[0];
-      setTimetableLocation(initialFitnessScheduleLocation);
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +44,7 @@ const FitnessScheduler = (props) => {
 
   const getFitnessSchedule = async () => {
     try {
-      const res = await axios.get(`/schedule/${timetableLocation.id}`);
+      const res = await axios.get(`/schedule/${currentLocation.id}`);
 
       const schedule = res.data;
       console.log(res.data);
@@ -65,7 +64,7 @@ const FitnessScheduler = (props) => {
 
   useEffect(() => {
     getFitnessSchedule();
-  }, [timetableLocation]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentLocation]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDropDownArrowClick = () => {
     setIsDropDownOpen((prev) => !prev);
@@ -78,7 +77,7 @@ const FitnessScheduler = (props) => {
   return (
     <React.Fragment>
       <div className="heading">
-        <h1 className="heading-title">{timetableLocation.name}</h1>
+        <h1 className="heading-title">{currentLocation.name}</h1>
         <div className="dropdown">
           <ArrowDropDownIcon
             sx={{
@@ -94,7 +93,7 @@ const FitnessScheduler = (props) => {
               <div
                 className="location-option"
                 key={index}
-                onClick={() => setTimetableLocation(location)}
+                onClick={() => setCurrentLocation(location)}
               >
                 {location.name}
               </div>
