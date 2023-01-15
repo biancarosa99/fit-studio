@@ -25,7 +25,7 @@ function App() {
               path="/trainerclasses/:time"
               element={<TrainerClassesPage />}
             ></Route>
-            <Route path="/myplans" element={<UserPlansPage />}></Route>
+            <Route path="/myplans/:time" element={<UserPlansPage />}></Route>
           </Routes>
         </div>
         <Footer />

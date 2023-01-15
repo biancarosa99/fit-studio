@@ -14,6 +14,9 @@ const FitnessScheduler = (props) => {
   const [fitnessSchedule, setFitnessSchedule] = useState({});
 
   const dayjs = require("dayjs");
+  const localizedFormat = require("dayjs/plugin/localizedFormat");
+
+  dayjs.extend(localizedFormat);
 
   const getLocations = async () => {
     try {
@@ -45,6 +48,7 @@ const FitnessScheduler = (props) => {
       const res = await axios.get(`/schedule/${timetableLocation.id}`);
 
       const schedule = res.data;
+      console.log(res.data);
 
       if (schedule) {
         const scheduleByDaysArray = getClassesForEachWeekDay(schedule);
@@ -68,7 +72,7 @@ const FitnessScheduler = (props) => {
   };
 
   const getFormattedDate = (date) => {
-    return dayjs(date).format("LLLL");
+    return dayjs(date).format("LLL");
   };
 
   return (

@@ -35,7 +35,7 @@ const UserSubscription = () => {
       }
     };
     getActiveSubscription();
-  }, []);
+  }, [user.token]);
   return (
     <div className="user-subscription-container">
       <h3>ACTIVE SUBSCRIPTION</h3>
@@ -45,7 +45,7 @@ const UserSubscription = () => {
           <h3>{activeSubscription.subscription.name}</h3>
 
           <div className="price">
-            <span>{activeSubscription.subscription.price}</span>
+            <span>{activeSubscription.subscription.price} lei</span>
           </div>
 
           <h3 className="month">

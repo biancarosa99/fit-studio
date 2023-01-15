@@ -132,7 +132,7 @@ const Navbar = () => {
             </a>
           </li>
           <li className={normalUserLoggedInClasses}>
-            <a className="anchor" href="/myplans">
+            <a className="anchor" href="/myplans/future">
               MY PLANS
             </a>
           </li>
@@ -181,7 +181,7 @@ const Navbar = () => {
               </a>
             </li>
             <li className={normalUserLoggedInClasses}>
-              <a className="mobile-anchor" href="/myplans">
+              <a className="mobile-anchor" href="/myplans/future">
                 MY PLANS
               </a>
             </li>
