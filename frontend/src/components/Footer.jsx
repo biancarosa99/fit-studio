@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../styles/Footer.css";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -9,14 +9,22 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import PhoneIcon from "@mui/icons-material/Phone";
 import axios from "axios";
 import { useEffect } from "react";
+import LocationContext from "../context/LocationContext";
 
 const Footer = () => {
+  const { currentLocation, setCurrentLocation } = useContext(LocationContext);
+
   const [locations, setLocations] = useState([]);
 
   const getLocations = async () => {
     try {
       const res = await axios.get("/location/");
       setLocations(res.data);
+      if (currentLocation) {
+        console.log(currentLocation);
+      } else {
+        setCurrentLocation(res.data[0]);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -24,6 +32,7 @@ const Footer = () => {
 
   useEffect(() => {
     getLocations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -35,8 +44,12 @@ const Footer = () => {
 
             <ul className="footer-column-list">
               {locations.map((location, index) => (
-                <li className="footer-column-list-item" key={index}>
-                  <a href="#something">
+                <li
+                  className="footer-column-list-item"
+                  key={index}
+                  onClick={() => setCurrentLocation(location)}
+                >
+                  <a href="/classesTimetable">
                     <LocationOnOutlinedIcon sx={{ fontSize: 21 }} />
                     <span>{location.name}</span>
                   </a>

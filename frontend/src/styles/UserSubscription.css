@@ -20,6 +20,13 @@
   /* width: 300px; */
 }
 
+.no-active-subscription {
+  padding: 2rem;
+  text-align: center;
+  border: 0.1rem solid #f45b69;
+  border-radius: 10px;
+}
+
 .subscription-details {
   display: flex;
   flex-direction: column;

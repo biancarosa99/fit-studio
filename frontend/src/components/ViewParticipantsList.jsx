@@ -10,22 +10,23 @@ const ViewParticipantsList = (props) => {
 
   useEffect(() => {
     const getAttendants = async (scheduledClassId) => {
+      const tkUser = props.tkUser;
       try {
         const res = await axios.get(`/schedule/users/${scheduledClassId}`, {
           headers: {
-            Authorization: `Bearer ${props.tkUser}`,
+            Authorization: `Bearer ${tkUser}`,
           },
         });
 
         setAttendants(res.data);
-        console.log(res.data);
       } catch (error) {
         console.log(error);
       }
     };
 
-    getAttendants(props.scheduledClassId);
-  }, []);
+    const scheduledClassId = props.scheduledClassId;
+    getAttendants(scheduledClassId);
+  }, [props.scheduledClassId, props.tkUser]);
 
   return (
     <Modal>
