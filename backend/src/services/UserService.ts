@@ -189,11 +189,11 @@ export const getUserAppointments = async (
             date: MoreThanOrEqual(now.toDate()),
           },
         },
-        order: {
-          scheduledClass: {
-            date: "ASC",
-          },
-        },
+        // order: {
+        //   scheduledClass: {
+        //     date: "ASC",
+        //   },
+        // },
         take: +take,
         skip: (+page - 1) * +take,
       });
@@ -215,7 +215,7 @@ export const getPastUserAppointments = async (
     const now = dayjs();
     const [scheduledAppointments, total] = await myDataSource
       .getRepository(Appointment)
-      .find({
+      .findAndCount({
         where: {
           user: {
             id: tkUser.id,
@@ -224,11 +224,11 @@ export const getPastUserAppointments = async (
             date: LessThan(now.toDate()),
           },
         },
-        order: {
-          scheduledClass: {
-            date: "ASC",
-          },
-        },
+        // order: {
+        //   scheduledClass: {
+        //     date: "ASC",
+        //   },
+        // },
         take: +take,
         skip: (+page - 1) * +take,
       });
@@ -260,6 +260,7 @@ export const getActiveSubscription = async (
       });
 
     if (
+      activeSubscription.length > 0 &&
       dayjs().isBetween(
         activeSubscription[0].start_date,
         activeSubscription[0].end_date

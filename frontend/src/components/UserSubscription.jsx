@@ -1,54 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/UserSubscription.css";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import AuthContext from "../context/AuthContext";
+import { useEffect } from "react";
+import axios from "axios";
+import { useContext } from "react";
 
 const UserSubscription = () => {
+  const { user } = useContext(AuthContext);
+  const [activeSubscription, setActiveSubscription] = useState({});
+
+  const dayjs = require("dayjs");
+
+  const getFormattedDate = (date) => {
+    return dayjs(date).format("DD/MM/YYYY");
+  };
+
+  useEffect(() => {
+    const tkUser = user.token;
+    const getActiveSubscription = async () => {
+      try {
+        const res = await axios.get("/user/subscription/", {
+          headers: {
+            Authorization: `Bearer ${tkUser}`,
+          },
+        });
+        setActiveSubscription(res.data);
+        console.log(res.data);
+        console.log(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getActiveSubscription();
+  }, [user.token]);
   return (
     <div className="user-subscription-container">
       <h3>ACTIVE SUBSCRIPTION</h3>
-      <div className="user-subscription">
-        <h3>FULL TIME PASS 1</h3>
 
-        <div className="price">
-          <span>100 lei</span>
+      {Object.keys(activeSubscription).length > 0 ? (
+        <div className="user-subscription">
+          <h3>{activeSubscription.subscription.name}</h3>
+
+          <div className="price">
+            <span>{activeSubscription.subscription.price} lei</span>
+          </div>
+
+          <h3 className="month">
+            {activeSubscription.subscription.duration} month
+          </h3>
+
+          <div className="subscription-details">
+            <div className="subscription-detail">
+              <PersonOutlineIcon sx={{ color: "#f45b69" }} />
+              <div className="subscription-detail-row-name">User: </div>
+              <div>
+                {activeSubscription.user.firstname}{" "}
+                {activeSubscription.user.lastname}
+              </div>
+            </div>
+
+            <div className="subscription-detail">
+              <CalendarMonthOutlinedIcon
+                sx={{ color: "#f45b69", fontSize: "large" }}
+              />
+              <div className="subscription-detail-row-name">Start Date: </div>
+              <div>{getFormattedDate(activeSubscription.start_date)}</div>
+            </div>
+
+            <div className="subscription-detail">
+              <CalendarMonthOutlinedIcon
+                sx={{ color: "#f45b69", fontSize: "large" }}
+              />
+              <div className="subscription-detail-row-name">End Date: </div>
+              <div>{getFormattedDate(activeSubscription.end_date)}</div>
+            </div>
+
+            <div className="subscription-detail">
+              <LocationOnOutlinedIcon
+                sx={{ color: "#f45b69", fontSize: "large" }}
+              />
+              <div className="subscription-detail-row-name">Locations: </div>
+              <div>All FitHub Studios</div>
+            </div>
+          </div>
         </div>
-
-        <h3 className="month">1 month</h3>
-
-        <div className="subscription-details">
-          <div className="subscription-detail">
-            <PersonOutlineIcon sx={{ color: "#f45b69" }} />
-            <div className="subscription-detail-row-name">User: </div>
-            <div>bianca_rosa99@yahoo.com</div>
-          </div>
-
-          <div className="subscription-detail">
-            <CalendarMonthOutlinedIcon
-              sx={{ color: "#f45b69", fontSize: "large" }}
-            />
-            <div className="subscription-detail-row-name">Start Date: </div>
-            <div>01/01/2023</div>
-          </div>
-
-          <div className="subscription-detail">
-            <CalendarMonthOutlinedIcon
-              sx={{ color: "#f45b69", fontSize: "large" }}
-            />
-            <div className="subscription-detail-row-name">End Date: </div>
-            <div>01/02/2023</div>
-          </div>
-
-          <div className="subscription-detail">
-            <LocationOnOutlinedIcon
-              sx={{ color: "#f45b69", fontSize: "large" }}
-            />
-            <div className="subscription-detail-row-name">Locations: </div>
-            <div>All FitHub Studios</div>
-          </div>
+      ) : (
+        <div className="no-active-subscription">
+          <h4>No active subscriptions found</h4>
         </div>
-      </div>
+      )}
     </div>
   );
 };

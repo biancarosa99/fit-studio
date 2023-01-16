@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useImperativeHandle, useState } from "react";
 import "../styles/TrainerClasses.css";
 import Pagination from "@mui/material/Pagination";
 import { useMediaQuery } from "react-responsive";
@@ -12,8 +12,9 @@ import axios from "axios";
 import AuthContext from "../context/AuthContext";
 import { useContext } from "react";
 import ViewParticipantsList from "./ViewParticipantsList";
+import { forwardRef } from "react";
 
-const TrainerClasses = (props) => {
+const TrainerClasses = forwardRef((props, ref) => {
   const { user } = useContext(AuthContext);
 
   const [upcomingClassesVisible, setUpcomingClassesVisible] = useState();
@@ -21,11 +22,13 @@ const TrainerClasses = (props) => {
   const [isViewParticipantsModalOpen, setIsViewParticipantsModalOpen] =
     useState(false);
   const [fitnessClassId, setFitnessClassId] = useState();
-  const [classes, setClasses] = useState(false);
+  const [classes, setClasses] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
 
   const { time } = useParams();
+
+  const { classesTableRef, refreshClassesRef } = ref;
 
   const dayjs = require("dayjs");
 
@@ -73,7 +76,6 @@ const TrainerClasses = (props) => {
 
   const getClasses = async () => {
     const userTk = user.token;
-    console.log(page);
     try {
       const res = await axios.get(`/trainer/${time}`, {
         params: {
@@ -85,9 +87,9 @@ const TrainerClasses = (props) => {
           Authorization: `Bearer ${userTk}`,
         },
       });
+      console.log(res.data);
       setClasses(res.data.scheduledClasses);
       setTotalPages(Math.ceil(res.data.total / 5));
-      console.log(res);
     } catch (err) {
       console.log(err);
     }
@@ -99,6 +101,7 @@ const TrainerClasses = (props) => {
 
   useEffect(() => {
     getClasses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   useEffect(() => {
@@ -110,11 +113,16 @@ const TrainerClasses = (props) => {
       setUpcomingClassesVisible(true);
     }
     getClasses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [time]);
+
+  useImperativeHandle(refreshClassesRef, () => ({
+    getClasses,
+  }));
 
   return (
     <React.Fragment>
-      <div className="trainer-table-actions-container">
+      <div className="trainer-table-actions-container" ref={classesTableRef}>
         <div className="table-title-container">
           <h3 className="table-title">
             {upcomingClassesVisible && "UPCOMING CLASSES"}
@@ -223,6 +231,6 @@ const TrainerClasses = (props) => {
       )}
     </React.Fragment>
   );
-};
+});
 
 export default TrainerClasses;
