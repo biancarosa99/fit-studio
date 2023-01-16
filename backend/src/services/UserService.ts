@@ -181,6 +181,7 @@ export const getUserAppointments = async (
     const [scheduledAppointments, total] = await myDataSource
       .getRepository(Appointment)
       .findAndCount({
+        relations: ["scheduledClass"],
         where: {
           user: {
             id: tkUser.id,
@@ -215,7 +216,8 @@ export const getPastUserAppointments = async (
     const now = dayjs();
     const [scheduledAppointments, total] = await myDataSource
       .getRepository(Appointment)
-      .find({
+      .findAndCount({
+        relations: ["scheduledClass"],
         where: {
           user: {
             id: tkUser.id,
