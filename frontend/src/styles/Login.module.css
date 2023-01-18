@@ -12,19 +12,18 @@
 }
 
 .modal {
-  position: fixed;
-  width: 50vh;
-  height: 80vh;
-  min-width: 100px;
-  min-height: 80vh;
+  margin-bottom: 200px;
+  width: 400px;
+  height: 480px;
   overflow: auto;
   background-color: white;
-  padding: 1rem;
-  border-radius: 14px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 30;
   animation: slide-down 300ms ease-out forwards;
-  /* overflow: auto; */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,15 +31,12 @@
 
 .login-title-section {
   display: flex;
+  margin-top: 10px;
   justify-content: space-between;
   align-items: center;
-  /* padding-left: 20px; */
-  padding-top: 20px;
-  /* padding-right: 20px; */
-  padding-bottom: 5px;
-  width: 200px;
-  /* width: 100%; */
-  /* background-color: blue; */
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 300px;
   border-bottom: 0.5px solid #f45b69;
 }
 
@@ -61,36 +57,26 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 10%;
-  /* padding-left: 20px; */
-  /* padding: 20px; */
-  /* width: 100%; */
-  /* background-color: aqua; */
-  /* min-width: 240px; */
+  padding-top: 80px;
 }
 
 .input-section {
-  /* padding-left: 20px; */
-  /* width: 100%; */
-  /* width: 250px; */
-  /* background-color: blueviolet; */
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
 }
 .input {
   background-color: #d3d3d3;
   border: none;
-  width: 200px;
-  height: 25px;
-  border-radius: 10px;
-  /* padding: 5px; */
+  width: 250px;
+  height: 60%;
+  border-radius: 8px;
+  padding: 0 10px 0 10px;
 }
 
 .input-label {
   padding-bottom: 5px;
   font-size: 20px;
-  /* padding-left: 4px; */
 }
 
 .error-message {
@@ -101,7 +87,8 @@
 }
 
 .signup-section {
-  padding-top: 10px;
+  padding-top: 90px;
+  /* margin-top: 50px; */
   padding-bottom: 20px;
   font-size: 12px;
 }
@@ -126,12 +113,6 @@
 .login-button:hover {
   opacity: 0.4;
 }
-/* @media (min-width: 768px) {
-  .modal {
-    width: 40rem;
-    left: calc(50% - 20rem);
-  }
-} */
 
 @keyframes slide-down {
   from {
@@ -144,14 +125,25 @@
   }
 }
 
+@media (max-width: 1200px) {
+  .modal {
+    margin-top: 200px;
+  }
+}
+
 @media (max-width: 820px) {
   .modal {
-    height: 50vh;
-    width: 40vh;
+    margin-top: 200px;
+    height: 100%;
+    width: 100%;
   }
 
   .form-section {
     padding-top: 10%;
+  }
+
+  .login-title-section {
+    width: 70%;
   }
 
   .signup-section {
@@ -163,15 +155,15 @@
 @media (max-width: 450px) {
   .modal {
     width: 100%;
-    height: 100vh;
+    height: 100%;
+    margin-top: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* justify-content: center; */
   }
 
   .login-title-section {
-    width: 300px;
+    width: 95%;
   }
 
   .login-title {
