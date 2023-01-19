@@ -89,7 +89,11 @@ const TrainerClasses = forwardRef((props, ref) => {
       });
       console.log(res.data);
       setClasses(res.data.scheduledClasses);
-      setTotalPages(Math.ceil(res.data.total / 5));
+      if (res.data.scheduledClasses > 0) {
+        setTotalPages(Math.ceil(res.data.total / 5));
+      } else {
+        setTotalPages(1);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -163,14 +167,19 @@ const TrainerClasses = forwardRef((props, ref) => {
       </div>
       <div className="trainer-future-classes-table-container">
         <table className="trainer-classes-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Class</th>
-              <th>Location</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+          {classes.length === 0 ? (
+            <div className="no-scheduled-classes">No data found</div>
+          ) : (
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Class</th>
+                <th>Location</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+          )}
+
           <tbody>
             {classes &&
               classes.map((scheduledClass, index) => {

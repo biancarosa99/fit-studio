@@ -45,3 +45,10 @@
   border: 1px solid #ecececec;
   text-align: center;
 }
+
+.no-data {
+  border: 1px solid #ecececec;
+  text-align: center;
+  color: #f45b69;
+  padding: 10px;
+}

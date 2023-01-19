@@ -42,6 +42,9 @@ const ViewParticipantsList = (props) => {
         </div>
 
         <div className="participants-list-container">
+          {attendants.length === 0 && (
+            <div className="no-data">No data found</div>
+          )}
           <div className="participants">
             {attendants &&
               attendants.map((attendant, index) => {

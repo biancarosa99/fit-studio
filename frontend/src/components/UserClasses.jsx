@@ -147,14 +147,18 @@ const UserFutureClasses = forwardRef((props, ref) => {
 
       <div className="table-container">
         <table className="user-classes-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Class</th>
-              <th>Location</th>
-              {time === "future" && <th>Actions</th>}
-            </tr>
-          </thead>
+          {classes.length === 0 ? (
+            <div className="no-scheduled-classes">No data found</div>
+          ) : (
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Class</th>
+                <th>Location</th>
+                {time === "future" && <th>Actions</th>}
+              </tr>
+            </thead>
+          )}
           <tbody>
             {classes &&
               classes.map((appointment, index) => {
