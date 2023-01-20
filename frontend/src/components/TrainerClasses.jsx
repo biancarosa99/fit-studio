@@ -89,7 +89,7 @@ const TrainerClasses = forwardRef((props, ref) => {
       });
       console.log(res.data);
       setClasses(res.data.scheduledClasses);
-      if (res.data.scheduledClasses > 0) {
+      if (res.data.scheduledClasses.length > 0) {
         setTotalPages(Math.ceil(res.data.total / 5));
       } else {
         setTotalPages(1);

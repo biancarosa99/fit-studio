@@ -92,6 +92,11 @@ const UserFutureClasses = forwardRef((props, ref) => {
   };
 
   useEffect(() => {
+    getClasses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
+  useEffect(() => {
     console.log("time changed");
     getClasses();
     // eslint-disable-next-line react-hooks/exhaustive-deps
