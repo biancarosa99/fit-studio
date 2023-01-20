@@ -151,10 +151,10 @@ const UserFutureClasses = forwardRef((props, ref) => {
       </div>
 
       <div className="table-container">
-        <table className="user-classes-table">
-          {classes.length === 0 ? (
-            <div className="no-scheduled-classes">No data found</div>
-          ) : (
+        {classes.length === 0 ? (
+          <div className="no-scheduled-classes">No data found</div>
+        ) : (
+          <table className="user-classes-table">
             <thead>
               <tr>
                 <th>Date</th>
@@ -163,48 +163,52 @@ const UserFutureClasses = forwardRef((props, ref) => {
                 {time === "future" && <th>Actions</th>}
               </tr>
             </thead>
-          )}
-          <tbody>
-            {classes &&
-              classes.map((appointment, index) => {
-                const appointmentId = appointment.id;
-                const appointmentDate = getFormattedDate(
-                  appointment.scheduledClass.date
-                );
-                const scheduledClassName =
-                  appointment.scheduledClass.fitnessClass.name;
-                const scheduledClassLocation =
-                  appointment.scheduledClass.location.name;
+            <tbody>
+              {classes &&
+                classes.map((appointment, index) => {
+                  const appointmentId = appointment.id;
+                  const appointmentDate = getFormattedDate(
+                    appointment.scheduledClass.date
+                  );
+                  const scheduledClassName =
+                    appointment.scheduledClass.fitnessClass.name;
+                  const scheduledClassLocation =
+                    appointment.scheduledClass.location.name;
 
-                return (
-                  <tr key={index}>
-                    <td data-label="Date" className="fitness-class-start-hour">
-                      {appointmentDate}
-                    </td>
-                    <td data-label="Class">{scheduledClassName}</td>
-                    <td data-label="Location">{scheduledClassLocation}</td>
-                    {time === "future" && (
-                      <td>
-                        <button
-                          className="cancel-class-button"
-                          onClick={() =>
-                            props.openCancelClassModal(
-                              scheduledClassName,
-                              scheduledClassLocation,
-                              appointmentDate,
-                              appointmentId
-                            )
-                          }
-                        >
-                          Cancel Class
-                        </button>
+                  return (
+                    <tr key={index}>
+                      <td
+                        data-label="Date"
+                        className="fitness-class-start-hour"
+                      >
+                        {appointmentDate}
                       </td>
-                    )}
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+                      <td data-label="Class">{scheduledClassName}</td>
+                      <td data-label="Location">{scheduledClassLocation}</td>
+                      {time === "future" && (
+                        <td>
+                          <button
+                            className="cancel-class-button"
+                            onClick={() =>
+                              props.openCancelClassModal(
+                                scheduledClassName,
+                                scheduledClassLocation,
+                                appointmentDate,
+                                appointmentId
+                              )
+                            }
+                          >
+                            Cancel Class
+                          </button>
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        )}
+
         <div className="pagination-container">
           <Pagination
             count={totalPages}

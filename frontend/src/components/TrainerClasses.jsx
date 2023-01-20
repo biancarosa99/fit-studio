@@ -166,10 +166,10 @@ const TrainerClasses = forwardRef((props, ref) => {
         </div>
       </div>
       <div className="trainer-future-classes-table-container">
-        <table className="trainer-classes-table">
-          {classes.length === 0 ? (
-            <div className="no-scheduled-classes">No data found</div>
-          ) : (
+        {classes.length === 0 ? (
+          <div className="no-scheduled-classes">No data found</div>
+        ) : (
+          <table className="trainer-classes-table">
             <thead>
               <tr>
                 <th>Date</th>
@@ -178,39 +178,43 @@ const TrainerClasses = forwardRef((props, ref) => {
                 <th>Actions</th>
               </tr>
             </thead>
-          )}
 
-          <tbody>
-            {classes &&
-              classes.map((scheduledClass, index) => {
-                const classDate = getFormattedDate(scheduledClass.date);
+            <tbody>
+              {classes &&
+                classes.map((scheduledClass, index) => {
+                  const classDate = getFormattedDate(scheduledClass.date);
 
-                return (
-                  <tr key={index}>
-                    <td data-label="Date" className="fitness-class-start-hour">
-                      {classDate}
-                    </td>
-                    <td data-label="Class">
-                      {scheduledClass.fitnessClass.name}
-                    </td>
-                    <td data-label="Location">
-                      {scheduledClass.location.name}
-                    </td>
-                    <td>
-                      <button
-                        className="view-participants-button"
-                        onClick={() =>
-                          openViewParticipantsList(scheduledClass.id)
-                        }
+                  return (
+                    <tr key={index}>
+                      <td
+                        data-label="Date"
+                        className="fitness-class-start-hour"
                       >
-                        View Particiants
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+                        {classDate}
+                      </td>
+                      <td data-label="Class">
+                        {scheduledClass.fitnessClass.name}
+                      </td>
+                      <td data-label="Location">
+                        {scheduledClass.location.name}
+                      </td>
+                      <td>
+                        <button
+                          className="view-participants-button"
+                          onClick={() =>
+                            openViewParticipantsList(scheduledClass.id)
+                          }
+                        >
+                          View Particiants
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        )}
+
         <div className="pagination-container">
           <Pagination
             count={totalPages}
