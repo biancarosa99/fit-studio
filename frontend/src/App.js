@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import axios from "axios";
-import AuthContext, { AuthProvider } from "./context/AuthContext";
+import AuthContext from "./context/AuthContext";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
