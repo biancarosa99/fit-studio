@@ -114,6 +114,7 @@ const FitnessScheduler = (props) => {
                   const classDate = getFormattedDate(scheduledClass.date);
                   const classId = scheduledClass.id;
                   const classMaxSpots = scheduledClass.max_spots;
+                  const classDuration = scheduledClass.fitnessClass.duration;
                   return (
                     <tr key={index}>
                       <td
@@ -124,7 +125,7 @@ const FitnessScheduler = (props) => {
                         {dayjs(scheduledClass.date).format("mm")}
                       </td>
                       <td data-lable="Fitness Class Name">{className}</td>
-                      <td data-lable="Avalable spots">{classMaxSpots}</td>
+                      <td data-lable="Avalable spots">{classDuration} mins</td>
                       <td data-lable="Actions">
                         <button
                           className="join-class-button"

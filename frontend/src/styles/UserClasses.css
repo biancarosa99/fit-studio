@@ -51,6 +51,13 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
+.no-scheduled-classes {
+  border: 1px solid #ecececec;
+  text-align: center;
+  color: #f45b69;
+  padding: 10px;
+}
+
 .user-classes-table thead {
   background-color: #f45b69;
   color: white;
@@ -104,6 +111,15 @@
   display: flex;
   justify-content: flex-start;
   /* margin-bottom: 40px; */
+}
+
+.no-scheduled-classes {
+  background-color: #f45b69;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px;
 }
 
 @media (max-width: 768px) {
