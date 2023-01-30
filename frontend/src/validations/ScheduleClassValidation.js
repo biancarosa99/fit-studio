@@ -13,8 +13,9 @@ function parseDateString(value, originalValue) {
 }
 
 export const scheduleClassValidationSchema = yup.object({
-  selectLocation: yup.string().required("Required"),
+  location: yup.string().required("Required"),
   fitnessClass: yup.string().required("Required"),
+  maxSpots: yup.number().required("Required"),
   // date: date().transform(parseDateString).min(today).required("Required"),
-  date: yup.string().required("Required"),
+  date: yup.date().required("Required"),
 });
