@@ -61,17 +61,6 @@ const AddFitnessClass = forwardRef((props, ref) => {
     } catch (err) {
       props.unsuccessfulScheduleNewClassHandler(err.response.data);
     }
-
-    console.log(
-      "form subbmited: " +
-        data.fitnessClass +
-        " " +
-        data.location +
-        " " +
-        data.maxSpots +
-        " " +
-        data.date
-    );
   };
 
   useEffect(() => {
@@ -97,6 +86,102 @@ const AddFitnessClass = forwardRef((props, ref) => {
     getFitnessClasses();
   }, []);
 
+  const locationSx = {
+    ".MuiOutlinedInput-notchedOutline": {
+      borderColor: "#f45b69",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#f45b69",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#f45b69",
+    },
+    ".MuiSvgIcon-root ": {
+      fill: "#f45b69 !important",
+    },
+    "label.Mui-focused": {
+      color: "#f45b69 !important",
+    },
+    "&:focus label": {
+      color: "#f45b69",
+    },
+    ".MuiFormLabel-focus": {
+      color: "#f45b69",
+    },
+  };
+
+  const classSx = {
+    ".MuiOutlinedInput-notchedOutline": {
+      borderColor: "#f45b69",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#f45b69",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#f45b69",
+    },
+    ".MuiSvgIcon-root ": {
+      fill: "#f45b69 !important",
+    },
+    "label.Mui-focused": {
+      color: "#f45b69 !important",
+    },
+    "&:focus label": {
+      color: "#f45b69",
+    },
+    ".MuiFormLabel-focus": {
+      color: "#f45b69 ",
+    },
+  };
+
+  const maxSpotsSx = {
+    ".MuiOutlinedInput-notchedOutline": {
+      borderColor: "#f45b69 !important",
+    },
+    label: {
+      color: "#f45b69 !important",
+    },
+    "label.Mui-focused": {
+      color: "#f45b69 !important",
+    },
+    "&:focus label": {
+      color: "#f45b69",
+    },
+    ".MuiFormLabel-focus": {
+      color: "#f45b69 ",
+    },
+  };
+
+  const datePickerSx = {
+    ".myDatePicker .Mui-focused fieldset.MuiOutlinedInput-notchedOutline": {
+      borderColor: "#f45b69 !important",
+    },
+    ".MuiOutlinedInput-notchedOutline": {
+      borderColor: "#f45b69",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#f45b69",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#f45b69",
+    },
+    ".MuiSvgIcon-root ": {
+      fill: "#f45b69 !important",
+    },
+    "label.Mui-focused": {
+      color: "#f45b69 !important",
+    },
+    "&:focus label": {
+      color: "#f45b69 !important",
+    },
+    ".MuiFormLabel-focus": {
+      color: "#f45b69 !important",
+    },
+    ".MuiFormLabel-root": {
+      color: "#f45b69 !important",
+    },
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <div className="add-class-container" ref={ref}>
@@ -109,7 +194,7 @@ const AddFitnessClass = forwardRef((props, ref) => {
         >
           <FormControl fullWidth error={!!errors.location}>
             <InputLabel
-              id="demo-simple-select-label"
+              id="location-select-label"
               sx={{
                 color: "#f45b69 !important",
               }}
@@ -117,8 +202,8 @@ const AddFitnessClass = forwardRef((props, ref) => {
               Location
             </InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              labelId="location-select-label"
+              id="location-select"
               {...register("location")}
               defaultValue=""
               label="Location"
@@ -130,29 +215,7 @@ const AddFitnessClass = forwardRef((props, ref) => {
                 },
               }}
               labelstyle={{ color: "#f45b69" }}
-              sx={{
-                ".MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#f45b69",
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#f45b69",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#f45b69",
-                },
-                ".MuiSvgIcon-root ": {
-                  fill: "#f45b69 !important",
-                },
-                "label.Mui-focused": {
-                  color: "#f45b69 !important",
-                },
-                "&:focus label": {
-                  color: "#f45b69",
-                },
-                ".MuiFormLabel-focus": {
-                  color: "#f45b69",
-                },
-              }}
+              sx={locationSx}
             >
               {dbLocations &&
                 dbLocations.map((dbLocation, index) => (
@@ -166,7 +229,7 @@ const AddFitnessClass = forwardRef((props, ref) => {
 
           <FormControl fullWidth error={!!errors.fitnessClass}>
             <InputLabel
-              id="demo-simple-select-label"
+              id="class-select-label"
               sx={{
                 color: "#f45b69 !important",
               }}
@@ -174,9 +237,9 @@ const AddFitnessClass = forwardRef((props, ref) => {
               Class
             </InputLabel>
             <Select
-              labelId="demo-simple-select-label"
+              labelId="class-select-label"
+              id="class-select"
               variant="outlined"
-              id="demo-simple-select"
               label="Class"
               {...register("fitnessClass")}
               defaultValue=""
@@ -188,29 +251,7 @@ const AddFitnessClass = forwardRef((props, ref) => {
                 },
               }}
               labelstyle={{ color: "#f45b69" }}
-              sx={{
-                ".MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#f45b69",
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#f45b69",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#f45b69",
-                },
-                ".MuiSvgIcon-root ": {
-                  fill: "#f45b69 !important",
-                },
-                "label.Mui-focused": {
-                  color: "#f45b69 !important",
-                },
-                "&:focus label": {
-                  color: "#f45b69",
-                },
-                ".MuiFormLabel-focus": {
-                  color: "#f45b69 ",
-                },
-              }}
+              sx={classSx}
             >
               {dbFitnessClasses &&
                 dbFitnessClasses.map((dbFitnessClass, index) => (
@@ -230,23 +271,7 @@ const AddFitnessClass = forwardRef((props, ref) => {
               variant="outlined"
               {...register("maxSpots")}
               InputProps={{ inputProps: { min: 1, max: 50 } }}
-              sx={{
-                ".MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#f45b69 !important",
-                },
-                label: {
-                  color: "#f45b69 !important",
-                },
-                "label.Mui-focused": {
-                  color: "#f45b69 !important",
-                },
-                "&:focus label": {
-                  color: "#f45b69",
-                },
-                ".MuiFormLabel-focus": {
-                  color: "#f45b69 ",
-                },
-              }}
+              sx={maxSpotsSx}
             />
             <FormHelperText>{errors.maxSpots?.message}</FormHelperText>
           </FormControl>
@@ -260,39 +285,10 @@ const AddFitnessClass = forwardRef((props, ref) => {
                   renderInput={(props) => (
                     <TextField
                       {...props}
-                      className="myDatePicker"
-                      sx={{
-                        ".myDatePicker .Mui-focused fieldset.MuiOutlinedInput-notchedOutline":
-                          {
-                            borderColor: "#f45b69 !important",
-                          },
-                        ".MuiOutlinedInput-notchedOutline": {
-                          borderColor: "#f45b69",
-                        },
-                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "#f45b69",
-                        },
-                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "#f45b69",
-                        },
-                        ".MuiSvgIcon-root ": {
-                          fill: "#f45b69 !important",
-                        },
-                        "label.Mui-focused": {
-                          color: "#f45b69 !important",
-                        },
-                        "&:focus label": {
-                          color: "#f45b69 !important",
-                        },
-                        ".MuiFormLabel-focus": {
-                          color: "#f45b69 !important",
-                        },
-                        ".MuiFormLabel-root": {
-                          color: "#f45b69 !important",
-                        },
-                      }}
                       error={!!fieldState.error}
                       helperText={fieldState.error?.message}
+                      className="myDatePicker"
+                      sx={datePickerSx}
                     />
                   )}
                   label="DateTimePicker"
