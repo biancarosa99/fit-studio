@@ -107,7 +107,7 @@ const AddFitnessClass = forwardRef((props, ref) => {
           className="form-container"
           onSubmit={handleSubmit(scheduleClassHandler)}
         >
-          <FormControl fullWidth>
+          <FormControl fullWidth error={!!errors.location}>
             <InputLabel
               id="demo-simple-select-label"
               sx={{
@@ -161,10 +161,10 @@ const AddFitnessClass = forwardRef((props, ref) => {
                   </MenuItem>
                 ))}
             </Select>
-            <FormHelperText>Error</FormHelperText>
+            <FormHelperText>{errors.location?.message}</FormHelperText>
           </FormControl>
 
-          <FormControl fullWidth>
+          <FormControl fullWidth error={!!errors.fitnessClass}>
             <InputLabel
               id="demo-simple-select-label"
               sx={{
@@ -219,16 +219,16 @@ const AddFitnessClass = forwardRef((props, ref) => {
                   </MenuItem>
                 ))}
             </Select>
+            <FormHelperText>{errors.fitnessClass?.message}</FormHelperText>
           </FormControl>
 
-          <FormControl fullWidth>
+          <FormControl fullWidth error={!!errors.maxSpots}>
             <TextField
               lid="outlined-basic"
               type="number"
               label="Maximum Spots"
               variant="outlined"
               {...register("maxSpots")}
-              defaultValue=""
               InputProps={{ inputProps: { min: 1, max: 50 } }}
               sx={{
                 ".MuiOutlinedInput-notchedOutline": {
@@ -248,13 +248,14 @@ const AddFitnessClass = forwardRef((props, ref) => {
                 },
               }}
             />
+            <FormHelperText>{errors.maxSpots?.message}</FormHelperText>
           </FormControl>
 
           <FormControl fullWidth>
             <Controller
               name="date"
               control={control}
-              render={({ field: { onChange, value } }) => (
+              render={({ field: { onChange, value }, fieldState }) => (
                 <DateTimePicker
                   renderInput={(props) => (
                     <TextField
@@ -290,16 +291,14 @@ const AddFitnessClass = forwardRef((props, ref) => {
                           color: "#f45b69 !important",
                         },
                       }}
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
                     />
                   )}
                   label="DateTimePicker"
                   value={value}
                   onChange={onChange}
-                  defaultValue=""
-                  format="DD/MM/yyyy"
-                >
-                  DateTime
-                </DateTimePicker>
+                />
               )}
             ></Controller>
           </FormControl>
