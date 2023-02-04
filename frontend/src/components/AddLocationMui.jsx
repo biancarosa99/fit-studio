@@ -10,19 +10,19 @@ import { debounce } from "@mui/material/utils";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import "../styles/AddLocation.css";
 
-// const GOOGLE_MAPS_API_KEY = "AIzaSyBK4KhYufPtMNFFSXYEv94sdTDKU5JIC_o";
+const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_API_KEY;
 
-// function loadScript(src, position, id) {
-//   if (!position) {
-//     return;
-//   }
+function loadScript(src, position, id) {
+  if (!position) {
+    return;
+  }
 
-//   const script = document.createElement("script");
-//   script.setAttribute("async", "");
-//   script.setAttribute("id", id);
-//   script.src = src;
-//   position.appendChild(script);
-// }
+  const script = document.createElement("script");
+  script.setAttribute("async", "");
+  script.setAttribute("id", id);
+  script.src = src;
+  position.appendChild(script);
+}
 
 const autocompleteService = { current: null };
 
@@ -37,17 +37,17 @@ export default function GoogleMaps() {
 
   const loaded = React.useRef(false);
 
-  //   if (typeof window !== "undefined" && !loaded.current) {
-  //     if (!document.querySelector("#google-maps")) {
-  //       loadScript(
-  //         `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`,
-  //         document.querySelector("head"),
-  //         "google-maps"
-  //       );
-  //     }
+  if (typeof window !== "undefined" && !loaded.current) {
+    if (!document.querySelector("#google-maps")) {
+      loadScript(
+        `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&callback=Function.prototype`,
+        document.querySelector("head"),
+        "google-maps"
+      );
+    }
 
-  //     loaded.current = true;
-  //   }
+    loaded.current = true;
+  }
 
   const fetch = React.useMemo(
     () =>
