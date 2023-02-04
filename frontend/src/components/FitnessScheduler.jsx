@@ -89,66 +89,77 @@ const FitnessScheduler = (props) => {
             onClick={handleDropDownArrowClick}
           />
           <div className="dropdown-content">
-            {locations.map((location, index) => (
-              <div
-                className="location-option"
-                key={index}
-                onClick={() => setCurrentLocation(location)}
-              >
-                {location.name}
-              </div>
-            ))}
+            {locations &&
+              locations.map((location, index) => (
+                <div
+                  className="location-option"
+                  key={index}
+                  onClick={() => setCurrentLocation(location)}
+                >
+                  {location.name}
+                </div>
+              ))}
           </div>
         </div>
       </div>
 
-      {Object.keys(fitnessSchedule).map((day, index) => (
-        <div className="table-container" key={index}>
+      {Object.keys(fitnessSchedule).length === 0 && (
+        <div className="table-container">
           <table className="table">
-            <caption>{day}</caption>
-            <tbody>
-              {fitnessSchedule[day] &&
-                fitnessSchedule[day].map((scheduledClass, index) => {
-                  const className = scheduledClass.fitnessClass.name;
-                  const classLocation = scheduledClass.location.name;
-                  const classDate = getFormattedDate(scheduledClass.date);
-                  const classId = scheduledClass.id;
-                  const classMaxSpots = scheduledClass.max_spots;
-                  const classDuration = scheduledClass.fitnessClass.duration;
-                  return (
-                    <tr key={index}>
-                      <td
-                        data-lable="Start Hour"
-                        className="fitness-start-hour-cell"
-                      >
-                        {dayjs(scheduledClass.date).format("HH")}:
-                        {dayjs(scheduledClass.date).format("mm")}
-                      </td>
-                      <td data-lable="Fitness Class Name">{className}</td>
-                      <td data-lable="Avalable spots">{classDuration} mins</td>
-                      <td data-lable="Actions">
-                        <button
-                          className="join-class-button"
-                          onClick={() =>
-                            props.openConfirmAppointment(
-                              className,
-                              classLocation,
-                              classDate,
-                              classId,
-                              classMaxSpots
-                            )
-                          }
-                        >
-                          Show Details
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
+            <caption>No data found</caption>
           </table>
         </div>
-      ))}
+      )}
+      {fitnessSchedule &&
+        Object.keys(fitnessSchedule).map((day, index) => (
+          <div className="table-container" key={index}>
+            <table className="table">
+              <caption>{day}</caption>
+              <tbody>
+                {fitnessSchedule[day] &&
+                  fitnessSchedule[day].map((scheduledClass, index) => {
+                    const className = scheduledClass.fitnessClass.name;
+                    const classLocation = scheduledClass.location.name;
+                    const classDate = getFormattedDate(scheduledClass.date);
+                    const classId = scheduledClass.id;
+                    const classMaxSpots = scheduledClass.max_spots;
+                    const classDuration = scheduledClass.fitnessClass.duration;
+                    return (
+                      <tr key={index}>
+                        <td
+                          data-lable="Start Hour"
+                          className="fitness-start-hour-cell"
+                        >
+                          {dayjs(scheduledClass.date).format("HH")}:
+                          {dayjs(scheduledClass.date).format("mm")}
+                        </td>
+                        <td data-lable="Fitness Class Name">{className}</td>
+                        <td data-lable="Avalable spots">
+                          {classDuration} mins
+                        </td>
+                        <td data-lable="Actions">
+                          <button
+                            className="join-class-button"
+                            onClick={() =>
+                              props.openConfirmAppointment(
+                                className,
+                                classLocation,
+                                classDate,
+                                classId,
+                                classMaxSpots
+                              )
+                            }
+                          >
+                            Show Details
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </div>
+        ))}
     </React.Fragment>
   );
 };

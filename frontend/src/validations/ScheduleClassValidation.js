@@ -1,20 +1,15 @@
 import * as yup from "yup";
-import { date, object } from "yup";
-import { parse, isDate } from "date-fns";
-
-const today = new Date();
-
-function parseDateString(value, originalValue) {
-  const parsedDate = isDate(originalValue)
-    ? originalValue
-    : parse(originalValue, "yyyy-MM-dd", new Date());
-
-  return parsedDate;
-}
 
 export const scheduleClassValidationSchema = yup.object({
-  selectLocation: yup.string().required("Required"),
-  fitnessClass: yup.string().required("Required"),
-  // date: date().transform(parseDateString).min(today).required("Required"),
-  date: yup.string().required("Required"),
+  location: yup.string().required("*Required"),
+  fitnessClass: yup.string().required("*Required"),
+  maxSpots: yup
+    .number()
+    .typeError("*Required")
+    .min(1, "Value must be more than or equal to 1")
+    .max(50, "Value must be less than or equal to 50")
+    .required("*Required"),
+  date: yup
+    .date()
+    .typeError("The value must be a valid date ( MM/DD/YYYY hh:mm a|p )"),
 });
