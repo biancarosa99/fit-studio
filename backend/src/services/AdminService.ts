@@ -9,18 +9,30 @@ export const createLocation = async (
   req: AuthenticatedRequest,
   res: Response
 ) => {
-  const { name, address } = req.body;
+  const { name, address, lat, lng } = req.body;
   const { tkUser } = req;
 
   if (!tkUser.isAdmin)
     return res
       .status(401)
-      .json("You are not authenticaded create a new location");
+      .json("You are not authenticated to create a new location");
+
+  if (!name) return res.status(400).json("Name cannot be empty");
+
+  if (!address) return res.status(400).json("Address cannot be empty");
+
+  if (!lat)
+    return res.status(400).json("Please choose a location from the list");
+
+  if (!lng)
+    return res.status(400).json("Please choose a location from the list");
 
   try {
     const location = myDataSource.getRepository(Location).create({
       name,
       address,
+      lat,
+      lng,
     });
     const result = await location.save();
     return res.json(result);
@@ -42,7 +54,7 @@ export const createFitnessClass = async (
   if (!tkUser.isAdmin)
     return res
       .status(401)
-      .json("You are not authenticaded to create a subscription");
+      .json("You are not authenticated to create a subscription");
 
   try {
     const fitnessClass = myDataSource.getRepository(FitnessClass).create({
