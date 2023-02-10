@@ -15,7 +15,7 @@ export const createLocation = async (
   if (!tkUser.isAdmin)
     return res
       .status(401)
-      .json("You are not authenticated to create a new location");
+      .json("You are not authorized to create a new location");
 
   if (!name) return res.status(400).json("Name cannot be empty");
 

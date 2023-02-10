@@ -13,6 +13,8 @@ import { FormControl } from "@mui/material";
 import axios from "axios";
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
+import { useState } from "react";
+import SnackBar from "../UI/SnackBar";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -40,6 +42,9 @@ export default function GoogleMaps() {
     lng: null,
   });
   const [locationName, setLocationName] = React.useState("");
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
 
   const loaded = React.useRef(false);
 
@@ -107,22 +112,11 @@ export default function GoogleMaps() {
     setCoordinates(latLng);
   };
 
-  const locationInputSx = {
-    ".MuiOutlinedInput-notchedOutline": {
-      borderColor: "#f45b69 !important",
-    },
-    label: {
-      color: "#f45b69 !important",
-    },
-    "label.Mui-focused": {
-      color: "#f45b69 !important",
-    },
-    "&:focus label": {
-      color: "#f45b69",
-    },
-    ".MuiFormLabel-focus": {
-      color: "#f45b69 ",
-    },
+  const openSnackbar = (message, status) => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(status);
+    setIsSnackbarOpen(true);
+    setTimeout(() => setIsSnackbarOpen(false), 6000);
   };
 
   const handleAddLocation = async (e) => {
@@ -144,9 +138,31 @@ export default function GoogleMaps() {
           },
         }
       );
+      setLocationName("");
+      setValue(null);
+      openSnackbar("Location added succesfully!", "success");
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
+      openSnackbar(err.response.data, "error");
     }
+  };
+
+  const locationInputSx = {
+    ".MuiOutlinedInput-notchedOutline": {
+      borderColor: "#f45b69 !important",
+    },
+    label: {
+      color: "#f45b69 !important",
+    },
+    "label.Mui-focused": {
+      color: "#f45b69 !important",
+    },
+    "&:focus label": {
+      color: "#f45b69",
+    },
+    ".MuiFormLabel-focus": {
+      color: "#f45b69 ",
+    },
   };
 
   return (
@@ -244,6 +260,13 @@ export default function GoogleMaps() {
           <button className="add-location-button">Add location</button>
         </div>
       </form>
+
+      <SnackBar
+        open={isSnackbarOpen}
+        closeSnackbarHandler={() => setIsSnackbarOpen(false)}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </div>
   );
 }
