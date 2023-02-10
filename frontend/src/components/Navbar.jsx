@@ -92,6 +92,10 @@ const Navbar = () => {
     ? "menu-item"
     : "menu-item hide-menu-item";
 
+  const adminLoggedInClasses = user?.user?.isAdmin
+    ? "menu-item"
+    : "menu-item hide-menu-item";
+
   const normalUserLoggedInClasses = user
     ? user?.user?.isTrainer
       ? "menu-item hide-menu-item"
@@ -115,6 +119,11 @@ const Navbar = () => {
           <li className="menu-item">
             <a className="anchor" href="/classesTimetable">
               PLANS
+            </a>
+          </li>
+          <li className={trainerLoggedInClasses}>
+            <a className="anchor" href="/admin/addLocation">
+              ADMIN
             </a>
           </li>
           <li className={userLoggedOutClasses} onClick={openLoginModalHandler}>
@@ -161,6 +170,11 @@ const Navbar = () => {
             <li className="menu-item">
               <a className="anchor-mobile" href="/classesTimetable">
                 PLANS
+              </a>
+            </li>
+            <li className={trainerLoggedInClasses}>
+              <a className="anchor-mobile" href="/admin/addLocation">
+                ADMIN
               </a>
             </li>
             <li
