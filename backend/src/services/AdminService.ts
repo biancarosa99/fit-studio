@@ -54,7 +54,7 @@ export const createFitnessClass = async (
   if (!tkUser.isAdmin)
     return res
       .status(401)
-      .json("You are not authenticated to create a subscription");
+      .json("You are not authenticated to create a fitness class");
 
   try {
     const fitnessClass = myDataSource.getRepository(FitnessClass).create({

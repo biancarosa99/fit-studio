@@ -10,6 +10,9 @@ import { debounce } from "@mui/material/utils";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import "../styles/AddLocation.css";
 import { FormControl } from "@mui/material";
+import axios from "axios";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -28,10 +31,11 @@ function loadScript(src, position, id) {
 const autocompleteService = { current: null };
 
 export default function GoogleMaps() {
+  const { user } = useContext(AuthContext);
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
-  const [, setCoordinates] = React.useState({
+  const [coordinates, setCoordinates] = React.useState({
     lat: null,
     lng: null,
   });
@@ -121,9 +125,36 @@ export default function GoogleMaps() {
     },
   };
 
+  const handleAddLocation = async (e) => {
+    e.preventDefault();
+
+    try {
+      const userTk = user.token;
+      await axios.post(
+        "/admin/location",
+        {
+          name: locationName,
+          address: value,
+          lat: coordinates.lat,
+          lng: coordinates.lng,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userTk}`,
+          },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="add-location-container">
-      <form className="add-location-form-container">
+      <form
+        className="add-location-form-container"
+        onSubmit={handleAddLocation}
+      >
         <FormControl fullWidth>
           <TextField
             lid="location-name"
@@ -133,6 +164,7 @@ export default function GoogleMaps() {
             sx={locationInputSx}
             value={locationName}
             onChange={(e) => setLocationName(e.target.value)}
+            inputProps={{ maxLength: 25 }}
           />
         </FormControl>
         <Autocomplete
