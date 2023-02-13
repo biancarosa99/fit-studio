@@ -1,9 +1,49 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import Subscription from "../entities/Subscription";
 import Location from "../entities/Location";
 import FitnessClass from "../entities/FitnessClass";
 import { myDataSource } from "../app-data-source";
 import { AuthenticatedRequest } from "../middleware/verifyToken";
+import User from "../entities/User";
+
+export const getAllUsers = async (req: AuthenticatedRequest, res: Response) => {
+  const { tkUser } = req;
+
+  if (!tkUser.isAdmin)
+    return res.status(401).json("You are not authorized to see all users");
+
+  try {
+    const users = await myDataSource.getRepository(User).find({
+      order: {
+        lastname: "ASC",
+      },
+    });
+    return res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+};
+
+export const editUserRole = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  const { userId, isAdmin, isTrainer } = req.body;
+  try {
+    const userRepository = myDataSource.getRepository(User);
+    const userToUpdate = await userRepository.findOneBy({
+      id: userId,
+    });
+
+    userToUpdate.isAdmin = isAdmin;
+    userToUpdate.isTrainer = isTrainer;
+    const updatedUser = await userRepository.save(userToUpdate);
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
 
 export const createLocation = async (
   req: AuthenticatedRequest,
@@ -97,4 +137,10 @@ export const createSubscription = async (
   }
 };
 
-module.exports = { createFitnessClass, createSubscription, createLocation };
+module.exports = {
+  getAllUsers,
+  editUserRole,
+  createFitnessClass,
+  createSubscription,
+  createLocation,
+};
