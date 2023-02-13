@@ -4,6 +4,17 @@
   padding-bottom: 50px;
 }
 
+.add-location-title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.add-location-title {
+  color: #f45b69;
+  font-weight: 500;
+}
+
 .add-location-form-container {
   width: 100%;
   display: flex;
