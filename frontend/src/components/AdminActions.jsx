@@ -29,11 +29,14 @@ const AdminActions = ({ params, activeRowId, setActiveRowId }) => {
           },
         }
       );
-      setIsLoading(false);
-      if (res.status === 200) {
-        setSuccess(true);
-        setActiveRowId(null);
-      }
+      setTimeout(() => {
+        if (res.status === 200) {
+          setSuccess(true);
+          setActiveRowId(null);
+        }
+        setIsLoading(false);
+      }, 1000);
+
       console.log(res.data);
     } catch (err) {
       console.log(err.data);
@@ -44,7 +47,8 @@ const AdminActions = ({ params, activeRowId, setActiveRowId }) => {
     if (activeRowId === params.id && success) {
       setSuccess(false);
     }
-  }, [activeRowId, params.id, success]);
+    // eslint-disable-next-line
+  }, [activeRowId]);
   return (
     <Box sx={{ position: "relative" }}>
       {success ? (

@@ -9,7 +9,7 @@ const UsersTable = () => {
   const { user } = useContext(AuthContext);
 
   const [users, setUsers] = useState([]);
-  const [pageSize, setPageSize] = useState(null);
+  const [pageSize, setPageSize] = useState(10);
   const [activeRowId, setActiveRowId] = useState(null);
 
   useEffect(() => {
@@ -61,21 +61,21 @@ const UsersTable = () => {
     [activeRowId]
   );
   return (
-    <div style={{ padding: "100px" }}>
+    <div style={{ width: "100%", marginTop: "50px" }}>
       <Box sx={{ height: 400, width: "100%" }}>
-        <Typography
-          variant="h3"
-          component="h3"
+        {/* <Typography
+          variant="h4"
+          component="h4"
           sx={{ textAlign: "center", mt: 3, mb: 3 }}
         >
           Users
-        </Typography>
+        </Typography> */}
         <DataGrid
           columns={columns}
           rows={users}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[5, 10, 20, 100]}
+          rowsPerPageOptions={[5, 10, 20, 30]}
           sx={{
             "& .css-gl260s-MuiDataGrid-columnHeadersInner": {
               color: "#f45b69",

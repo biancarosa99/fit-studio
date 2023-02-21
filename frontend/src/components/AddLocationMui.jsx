@@ -167,9 +167,9 @@ export default function GoogleMaps() {
 
   return (
     <div className="add-location-container">
-      <div className="add-location-title-container">
+      {/* <div className="add-location-title-container">
         <h2 className="add-location-title">Add a new location</h2>
-      </div>
+      </div> */}
       <form
         className="add-location-form-container"
         onSubmit={handleAddLocation}

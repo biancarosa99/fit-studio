@@ -1,12 +1,10 @@
 import React from "react";
-import AddLocationMui from "../../components/AddLocationMui";
-import UsersTable from "../../components/UsersTable";
+import LabTabs from "../../components/Tabs";
 
 const AddLocationPage = () => {
   return (
     <React.Fragment>
-      <AddLocationMui />
-      <UsersTable />
+      <LabTabs />
     </React.Fragment>
   );
 };
