@@ -121,7 +121,7 @@ const Navbar = () => {
               PLANS
             </a>
           </li>
-          <li className={trainerLoggedInClasses}>
+          <li className={adminLoggedInClasses}>
             <a className="anchor" href="/admin/addLocation">
               ADMIN
             </a>
@@ -172,7 +172,7 @@ const Navbar = () => {
                 PLANS
               </a>
             </li>
-            <li className={trainerLoggedInClasses}>
+            <li className={adminLoggedInClasses}>
               <a className="anchor-mobile" href="/admin/addLocation">
                 ADMIN
               </a>

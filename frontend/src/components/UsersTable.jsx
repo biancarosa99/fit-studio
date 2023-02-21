@@ -2,7 +2,6 @@ import { Box, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { bool } from "yup";
 import AuthContext from "../context/AuthContext";
 import AdminActions from "./AdminActions";
 
@@ -28,7 +27,7 @@ const UsersTable = () => {
       }
     };
     getUsers();
-  }, []);
+  }, [user.token]);
 
   const columns = useMemo(
     () => [

@@ -1,5 +1,4 @@
 import React from "react";
-import AddLocation from "../../components/AddLocation";
 import AddLocationMui from "../../components/AddLocationMui";
 import UsersTable from "../../components/UsersTable";
 

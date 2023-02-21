@@ -1,10 +1,6 @@
 import { CircularProgress, Fab } from "@mui/material";
 import { Box } from "@mui/system";
-import {
-  GridCheckCircleIcon,
-  GridCheckIcon,
-  GridSaveAltIcon,
-} from "@mui/x-data-grid";
+import { GridCheckIcon, GridSaveAltIcon } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthContext";
@@ -48,7 +44,7 @@ const AdminActions = ({ params, activeRowId, setActiveRowId }) => {
     if (activeRowId === params.id && success) {
       setSuccess(false);
     }
-  }, [activeRowId]);
+  }, [activeRowId, params.id, success]);
   return (
     <Box sx={{ position: "relative" }}>
       {success ? (
