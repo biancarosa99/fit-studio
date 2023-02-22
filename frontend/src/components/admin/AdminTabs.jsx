@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
 import UsersTable from "./UsersTable";
 import AddLocationMui from "./AddLocationMui";
+import { useMediaQuery } from "react-responsive";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -44,6 +45,7 @@ function a11yProps(index) {
 
 export default function AdminTabs() {
   const [value, setValue] = React.useState(0);
+  const isMobile = useMediaQuery({ query: "(max-width: 548px)" });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -59,7 +61,6 @@ export default function AdminTabs() {
         sx={{
           borderBottom: 1,
           borderColor: "divider",
-          display: "flex",
         }}
       >
         <Tabs
@@ -72,6 +73,7 @@ export default function AdminTabs() {
               backgroundColor: "#f45b69",
             },
           }}
+          variant={isMobile ? "fullWidth" : "standard"}
         >
           <Tab
             value={0}
