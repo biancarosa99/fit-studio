@@ -1,8 +1,8 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../../context/AuthContext";
 import AdminActions from "./AdminActions";
 
 const UsersTable = () => {

@@ -42,7 +42,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ColorTabs() {
+export default function AdminTabs() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {

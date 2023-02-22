@@ -8,13 +8,13 @@ import Typography from "@mui/material/Typography";
 import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
-import "../styles/AddLocation.css";
+import "../../styles/AddLocation.css";
 import { FormControl } from "@mui/material";
 import axios from "axios";
 import { useContext } from "react";
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../../context/AuthContext";
 import { useState } from "react";
-import SnackBar from "../UI/SnackBar";
+import SnackBar from "../../UI/SnackBar";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_API_KEY;
 

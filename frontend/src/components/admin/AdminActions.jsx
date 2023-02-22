@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import { GridCheckIcon, GridSaveAltIcon } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../../context/AuthContext";
 
 const AdminActions = ({ params, activeRowId, setActiveRowId }) => {
   const { user } = useContext(AuthContext);
