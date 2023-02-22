@@ -31,9 +31,27 @@ const UsersTable = () => {
 
   const columns = useMemo(
     () => [
-      { field: "lastname", headerName: "Last Name", width: 180 },
-      { field: "firstname", headerName: "First Name", width: 180 },
-      { field: "email", headerName: "Email", width: 200 },
+      {
+        field: "lastname",
+        headerName: "Last Name",
+        width: 180,
+        align: "center",
+        headerAlign: "center",
+      },
+      {
+        field: "firstname",
+        headerName: "First Name",
+        width: 180,
+        align: "center",
+        headerAlign: "center",
+      },
+      {
+        field: "email",
+        headerName: "Email",
+        width: 200,
+        align: "center",
+        headerAlign: "center",
+      },
       {
         field: "isAdmin",
         headerName: "isAdmin",
