@@ -42,7 +42,14 @@ function App() {
                 </ProtectedRoute>
               }
             ></Route>
-            <Route path="/admin" element={<AdminPage />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute user={user} requiredRole="admin">
+                  <AdminPage />
+                </ProtectedRoute>
+              }
+            ></Route>
           </Routes>
         </div>
         <Footer />

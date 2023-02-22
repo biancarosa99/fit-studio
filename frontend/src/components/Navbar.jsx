@@ -122,7 +122,7 @@ const Navbar = () => {
             </a>
           </li>
           <li className={adminLoggedInClasses}>
-            <a className="anchor" href="/admin/addLocation">
+            <a className="anchor" href="/admin">
               ADMIN
             </a>
           </li>
@@ -173,7 +173,7 @@ const Navbar = () => {
               </a>
             </li>
             <li className={adminLoggedInClasses}>
-              <a className="anchor-mobile" href="/admin/addLocation">
+              <a className="anchor-mobile" href="/admin">
                 ADMIN
               </a>
             </li>
