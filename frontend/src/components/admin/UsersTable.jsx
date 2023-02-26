@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import AuthContext from "../../context/AuthContext";
+import SnackBar from "../../UI/SnackBar";
 import AdminActions from "./AdminActions";
 
 const UsersTable = () => {
@@ -11,6 +12,8 @@ const UsersTable = () => {
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [activeRowId, setActiveRowId] = useState(null);
+  const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
+  const [snackbarErrorMessage, setSnackbarErrorMessage] = useState("");
 
   useEffect(() => {
     const getUsers = async () => {
@@ -28,6 +31,20 @@ const UsersTable = () => {
     };
     getUsers();
   }, [user.token]);
+
+  const handleEditUserError = (errorMessage) => {
+    setSnackbarErrorMessage(errorMessage);
+    openErrorSnackbarHandler();
+  };
+
+  const openErrorSnackbarHandler = () => {
+    setOpenErrorSnackbar(true);
+    setTimeout(() => setOpenErrorSnackbar(false), 6000);
+  };
+
+  const closeSnackbarHandler = () => {
+    setOpenErrorSnackbar(false);
+  };
 
   const columns = useMemo(
     () => [
@@ -72,7 +89,11 @@ const UsersTable = () => {
         type: "actions",
         renderCell: (params) => {
           // console.log(params.row.id);
-          return <AdminActions {...{ params, activeRowId, setActiveRowId }} />;
+          return (
+            <AdminActions
+              {...{ params, activeRowId, setActiveRowId, handleEditUserError }}
+            />
+          );
         },
       },
     ],
@@ -102,6 +123,12 @@ const UsersTable = () => {
           onCellEditCommit={(params) => setActiveRowId(params.id)}
         />
       </Box>
+      <SnackBar
+        open={openErrorSnackbar}
+        message={snackbarErrorMessage}
+        closeSnackbarHandler={closeSnackbarHandler}
+        severity="error"
+      />
     </div>
   );
 };

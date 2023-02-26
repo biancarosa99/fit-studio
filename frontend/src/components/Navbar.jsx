@@ -51,6 +51,7 @@ const Navbar = () => {
     setUser(null);
     setMobileMenuIsOpen(false);
     navigate("/");
+    localStorage.removeItem("adminTab");
   };
 
   const sucssesfullLoginHandler = () => {

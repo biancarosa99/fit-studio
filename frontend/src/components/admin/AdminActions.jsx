@@ -1,20 +1,30 @@
 import { CircularProgress, Fab } from "@mui/material";
 import { Box } from "@mui/system";
-import { GridCheckIcon, GridSaveAltIcon } from "@mui/x-data-grid";
+import {
+  GridCheckIcon,
+  GridSaveAltIcon,
+  GridCloseIcon,
+} from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../context/AuthContext";
 
-const AdminActions = ({ params, activeRowId, setActiveRowId }) => {
+const AdminActions = ({
+  params,
+  activeRowId,
+  setActiveRowId,
+  handleEditUserError,
+}) => {
   const { user } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleEditUser = async () => {
     setIsLoading(true);
     const userTk = user.token;
     const { id, isAdmin, isTrainer } = params.row;
-    console.log(isAdmin, isTrainer);
+
     try {
       const res = await axios.put(
         "/admin/user",
@@ -32,14 +42,19 @@ const AdminActions = ({ params, activeRowId, setActiveRowId }) => {
       setTimeout(() => {
         if (res.status === 200) {
           setSuccess(true);
-          setActiveRowId(null);
         }
+        setActiveRowId(null);
         setIsLoading(false);
       }, 1000);
-
-      console.log(res.data);
     } catch (err) {
-      console.log(err.data);
+      console.log(err.response.data);
+
+      setTimeout(() => {
+        setError(true);
+        handleEditUserError(err.response.data);
+        setActiveRowId(null);
+        setIsLoading(false);
+      }, 1000);
     }
   };
 
@@ -47,6 +62,10 @@ const AdminActions = ({ params, activeRowId, setActiveRowId }) => {
     if (activeRowId === params.id && success) {
       setSuccess(false);
     }
+    if (activeRowId === params.id && error) {
+      setError(false);
+    }
+
     // eslint-disable-next-line
   }, [activeRowId]);
   return (
@@ -61,6 +80,17 @@ const AdminActions = ({ params, activeRowId, setActiveRowId }) => {
           }}
         >
           <GridCheckIcon />
+        </Fab>
+      ) : error ? (
+        <Fab
+          sx={{
+            width: 40,
+            height: 40,
+            bgcolor: "#f45b69",
+            color: "white",
+          }}
+        >
+          <GridCloseIcon />
         </Fab>
       ) : (
         <Fab

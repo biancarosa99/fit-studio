@@ -43,12 +43,24 @@ function a11yProps(index) {
   };
 }
 
+function getInitialState() {
+  const currentAdminTab = localStorage.getItem("adminTab");
+  if (currentAdminTab) {
+    const adminTab = JSON.parse(currentAdminTab);
+
+    return adminTab;
+  }
+
+  return 0;
+}
+
 export default function AdminTabs() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(getInitialState);
   const isMobile = useMediaQuery({ query: "(max-width: 548px)" });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    localStorage.setItem("adminTab", JSON.stringify(newValue));
   };
 
   return (
