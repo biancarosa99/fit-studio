@@ -88,7 +88,6 @@ const UsersTable = () => {
         headerName: "Actions",
         type: "actions",
         renderCell: (params) => {
-          // console.log(params.row.id);
           return (
             <AdminActions
               {...{ params, activeRowId, setActiveRowId, handleEditUserError }}
