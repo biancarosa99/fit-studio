@@ -100,7 +100,7 @@ const UsersTable = () => {
   );
   return (
     <div style={{ width: "100%", marginTop: "50px" }}>
-      <Box sx={{ height: 400, width: "100%" }}>
+      <Box sx={{ height: 370, width: "100%" }}>
         {/* <Typography
           variant="h4"
           component="h4"
