@@ -86,7 +86,7 @@ const AdminActions = ({
           sx={{
             width: 40,
             height: 40,
-            bgcolor: "#f45b69",
+            bgcolor: "red",
             color: "white",
           }}
         >
