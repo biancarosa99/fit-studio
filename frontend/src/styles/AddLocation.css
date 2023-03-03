@@ -1,0 +1,51 @@
+.add-location-container {
+  margin-top: 50px;
+  /* padding: 0 10%; */
+  padding-bottom: 50px;
+}
+
+.add-location-title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.add-location-title {
+  color: #f45b69;
+  font-weight: 500;
+}
+
+.add-location-form-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.add-location-button-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.add-location-button {
+  background-color: #f45b69;
+  color: white;
+  padding: 14px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 14px;
+  font-weight: 550;
+  transition: all 0.5s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .add-location-button:hover {
+    opacity: 0.4;
+  }
+}

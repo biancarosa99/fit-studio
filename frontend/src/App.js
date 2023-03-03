@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import "./App.css";
 import { LocationProvider } from "./context/LocationContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminPage from "./pages/admin/AdminPage";
 
 axios.defaults.baseURL = "http://localhost:3000";
 
@@ -38,6 +39,14 @@ function App() {
               element={
                 <ProtectedRoute user={user} requiredRole="user">
                   <UserPlansPage />
+                </ProtectedRoute>
+              }
+            ></Route>
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute user={user} requiredRole="admin">
+                  <AdminPage />
                 </ProtectedRoute>
               }
             ></Route>

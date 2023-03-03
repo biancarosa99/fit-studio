@@ -18,6 +18,18 @@ export default class Location extends BaseEntity {
   @Column()
   address: string;
 
+  @Column({
+    nullable: true,
+    type: "decimal",
+  })
+  lat: number;
+
+  @Column({
+    nullable: true,
+    type: "decimal",
+  })
+  lng: number;
+
   @OneToMany(
     () => ScheduledClass,
     (scheduledClass) => scheduledClass.location,

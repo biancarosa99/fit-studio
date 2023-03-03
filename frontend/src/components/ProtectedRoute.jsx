@@ -15,6 +15,9 @@ const ProtectedRoute = ({
   if (requiredRole === "user" && user.user.isTrainer) {
     return <Navigate to={redirectPath} replace />;
   }
+  if (requiredRole === "admin" && !user.user.isAdmin) {
+    return <Navigate to={redirectPath} replace />;
+  }
 
   return children;
 };
