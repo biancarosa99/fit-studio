@@ -1,5 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  useJsApiLoader,
+  MarkerF,
+  DirectionsRenderer,
+} from "@react-google-maps/api";
 import axios from "axios";
 import "../styles/Map.css";
 
@@ -11,9 +16,12 @@ const containerStyle = {
 };
 
 const Map = () => {
-  const center = useMemo(() => ({ lat: 45.7902454, lng: 21.2278635 }), []);
+  const center = useMemo(() => ({ lat: 45.7902454, lng: 21.2278635 }));
   const [map, setMap] = useState(null);
   const [fitHubLocations, setFitHubLocations] = useState([]);
+  const [directions, setDirections] = useState(null);
+  const [distance, setDistance] = useState("");
+  const [duration, setDuration] = useState("");
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
@@ -50,16 +58,27 @@ const Map = () => {
     setMap(null);
   }, []);
 
-  const handleClick = (position) => {
-    console.log("clicked: " + Object.values(position));
-  };
-
   const getLatLong = (location) => {
     return {
       lat: Number(location.lat),
       lng: Number(location.lng),
     };
   };
+
+  const calculateRoute = async () => {
+    const destination = { lat: 45.701755, lng: 21.2346449 };
+    const directionsService = new window.google.maps.DirectionsService();
+    const results = await directionsService.route({
+      origin: center,
+      destination: destination,
+      travelMode: window.google.maps.TravelMode.DRIVING,
+    });
+
+    setDirections(results);
+    setDistance(results.routes[0].legs[0].distance.text);
+    setDuration(results.routes[0].legs[0].duration.text);
+  };
+
   return (
     <div className="map-container">
       {isLoaded ? (
@@ -70,17 +89,19 @@ const Map = () => {
           onLoad={onLoad}
           onUnmount={onUnmount}
         >
-          <Marker position={center} />
+          <MarkerF position={center} />
           {fitHubLocations.map((fitHubLocation) => {
             const fitHubPosition = getLatLong(fitHubLocation);
+            console.log(fitHubPosition);
             return (
-              <Marker
+              <MarkerF
                 key={fitHubLocation.id}
                 position={fitHubPosition}
-                onClick={() => handleClick(fitHubPosition)}
+                onClick={calculateRoute}
               />
             );
           })}
+          {directions && <DirectionsRenderer directions={directions} />}
         </GoogleMap>
       ) : (
         <div>nup</div>
