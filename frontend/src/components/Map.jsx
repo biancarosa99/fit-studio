@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   GoogleMap,
   useJsApiLoader,
@@ -66,7 +66,7 @@ const Map = () => {
     };
   };
 
-  const successCallback = (position) => {
+  const successLocationCallback = (position) => {
     const userLocation = {
       lat: Number(position.coords.latitude),
       lng: Number(position.coords.longitude),
@@ -74,7 +74,7 @@ const Map = () => {
     setCenter(userLocation);
   };
 
-  const errorCallback = (error) => {
+  const errorLocationCallback = (error) => {
     console.log("Browser does not support the Geolocation API");
   };
 
@@ -87,8 +87,8 @@ const Map = () => {
   const getUserLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        successCallback,
-        errorCallback,
+        successLocationCallback,
+        errorLocationCallback,
         geolocationOptions
       );
     } else {
@@ -96,9 +96,6 @@ const Map = () => {
     }
   };
 
-  const clearRoute = () => {
-    setDirections(null);
-  };
   const calculateRoute = async (position) => {
     const directionsService = new window.google.maps.DirectionsService();
     clearRoute();
@@ -115,6 +112,10 @@ const Map = () => {
     setDuration(results.routes[0].legs[0].duration.text);
   };
 
+  const clearRoute = () => {
+    setDirections(null);
+  };
+
   return (
     <div className="map-container">
       {isLoaded ? (
@@ -125,22 +126,24 @@ const Map = () => {
           onLoad={() => setMap(map)}
         >
           {!directions && <MarkerF position={center} />}
-          {fitHubLocations.map((fitHubLocation) => {
-            const fitHubPosition = getLatLong(fitHubLocation);
-            return (
-              <MarkerF
-                key={fitHubLocation.id}
-                position={fitHubPosition}
-                onClick={() => calculateRoute(fitHubPosition)}
-              />
-            );
-          })}
+          {fitHubLocations &&
+            fitHubLocations.map((fitHubLocation) => {
+              const fitHubPosition = getLatLong(fitHubLocation);
+              return (
+                <MarkerF
+                  key={fitHubLocation.id}
+                  position={fitHubPosition}
+                  title={fitHubLocation.name}
+                  label={fitHubLocation.name}
+                  onClick={() => calculateRoute(fitHubPosition)}
+                />
+              );
+            })}
           {directions && <DirectionsRenderer directions={directions} />}
         </GoogleMap>
       ) : (
         <div>nup</div>
       )}
-      <button onClick={clearRoute}>Clear Route</button>
     </div>
   );
 };

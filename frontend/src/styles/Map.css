@@ -4,3 +4,8 @@
   align-items: center;
   justify-content: center;
 }
+
+.marker-container {
+  position: absolute;
+  z-index: 1;
+}
