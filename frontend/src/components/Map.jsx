@@ -16,7 +16,7 @@ const containerStyle = {
 };
 
 const Map = () => {
-  const center = useMemo(() => ({ lat: 45.7902454, lng: 21.2278635 }));
+  const [center, setCenter] = useState({ lat: 40.7127753, lng: -74.0059728 });
   const [map, setMap] = useState(null);
   const [fitHubLocations, setFitHubLocations] = useState([]);
   const [directions, setDirections] = useState(null);
@@ -32,6 +32,8 @@ const Map = () => {
       console.log("Latitude is :", position.coords.latitude);
       console.log("Longitude is :", position.coords.longitude);
     });
+    getUserLocation();
+    console.log("Current position: " + center.lat, +" " + center.lng);
   }, []);
 
   useEffect(() => {
@@ -39,7 +41,6 @@ const Map = () => {
       try {
         const res = await axios.get("/location/");
         setFitHubLocations(res.data);
-        console.log(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -47,16 +48,16 @@ const Map = () => {
     getLocations();
   }, []);
 
-  const onLoad = React.useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    // map.fitBounds(bounds);
+  // const onLoad = React.useCallback(function callback(map) {
+  //   const bounds = new window.google.maps.LatLngBounds(center);
+  //   // map.fitBounds(bounds);
 
-    setMap(map);
-  }, []);
+  //   setMap(map);
+  // }, []);
 
-  const onUnmount = React.useCallback(function callback(map) {
-    setMap(null);
-  }, []);
+  // const onUnmount = React.useCallback(function callback(map) {
+  //   setMap(null);
+  // }, []);
 
   const getLatLong = (location) => {
     return {
@@ -65,16 +66,51 @@ const Map = () => {
     };
   };
 
-  const calculateRoute = async () => {
-    const destination = { lat: 45.701755, lng: 21.2346449 };
+  const successCallback = (position) => {
+    const userLocation = {
+      lat: Number(position.coords.latitude),
+      lng: Number(position.coords.longitude),
+    };
+    setCenter(userLocation);
+  };
+
+  const errorCallback = (error) => {
+    console.log("Browser does not support the Geolocation API");
+  };
+
+  const geolocationOptions = {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: 5000,
+  };
+
+  const getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        successCallback,
+        errorCallback,
+        geolocationOptions
+      );
+    } else {
+      // code for legacy browsers
+    }
+  };
+
+  const clearRoute = () => {
+    setDirections(null);
+  };
+  const calculateRoute = async (position) => {
     const directionsService = new window.google.maps.DirectionsService();
+    clearRoute();
     const results = await directionsService.route({
       origin: center,
-      destination: destination,
+      destination: position,
       travelMode: window.google.maps.TravelMode.DRIVING,
+      provideRouteAlternatives: true,
     });
 
     setDirections(results);
+    console.log(results.routes);
     setDistance(results.routes[0].legs[0].distance.text);
     setDuration(results.routes[0].legs[0].duration.text);
   };
@@ -86,18 +122,16 @@ const Map = () => {
           mapContainerStyle={containerStyle}
           center={center}
           zoom={11}
-          onLoad={onLoad}
-          onUnmount={onUnmount}
+          onLoad={() => setMap(map)}
         >
-          <MarkerF position={center} />
+          {!directions && <MarkerF position={center} />}
           {fitHubLocations.map((fitHubLocation) => {
             const fitHubPosition = getLatLong(fitHubLocation);
-            console.log(fitHubPosition);
             return (
               <MarkerF
                 key={fitHubLocation.id}
                 position={fitHubPosition}
-                onClick={calculateRoute}
+                onClick={() => calculateRoute(fitHubPosition)}
               />
             );
           })}
@@ -106,6 +140,7 @@ const Map = () => {
       ) : (
         <div>nup</div>
       )}
+      <button onClick={clearRoute}>Clear Route</button>
     </div>
   );
 };

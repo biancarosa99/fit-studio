@@ -128,7 +128,7 @@ export default function GoogleMaps() {
         "/admin/location",
         {
           name: locationName,
-          address: value,
+          address: value.description,
           lat: coordinates.lat,
           lng: coordinates.lng,
         },
