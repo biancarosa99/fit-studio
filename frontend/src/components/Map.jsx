@@ -4,6 +4,7 @@ import {
   useJsApiLoader,
   MarkerF,
   DirectionsRenderer,
+  Marker,
 } from "@react-google-maps/api";
 import axios from "axios";
 import "../styles/Map.css";
@@ -125,17 +126,25 @@ const Map = () => {
           zoom={11}
           onLoad={() => setMap(map)}
         >
-          {!directions && <MarkerF position={center} />}
+          {!directions && <Marker position={center} />}
           {fitHubLocations &&
             fitHubLocations.map((fitHubLocation) => {
               const fitHubPosition = getLatLong(fitHubLocation);
               return (
-                <MarkerF
+                <Marker
                   key={fitHubLocation.id}
                   position={fitHubPosition}
-                  title={fitHubLocation.name}
-                  label={fitHubLocation.name}
                   onClick={() => calculateRoute(fitHubPosition)}
+                  label={{
+                    text: fitHubLocation.name,
+                    color: "#f45b69",
+                    fontWeight: "bold",
+                  }}
+                  icon={{
+                    url: "/fithublogo3.png",
+                    scaledSize: new window.google.maps.Size(70, 30),
+                    labelOrigin: new window.google.maps.Point(40, 35),
+                  }}
                 />
               );
             })}
