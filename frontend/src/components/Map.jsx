@@ -17,7 +17,7 @@ const containerStyle = {
 };
 
 const Map = () => {
-  const [center, setCenter] = useState({ lat: 40.7127753, lng: -74.0059728 });
+  const [center, setCenter] = useState({ lat: 45.7488716, lng: 21.2086793 });
   const [map, setMap] = useState(null);
   const [fitHubLocations, setFitHubLocations] = useState([]);
   const [directions, setDirections] = useState(null);
@@ -29,12 +29,7 @@ const Map = () => {
   });
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
-    });
     getUserLocation();
-    console.log("Current position: " + center.lat, +" " + center.lng);
   }, []);
 
   useEffect(() => {
@@ -99,6 +94,7 @@ const Map = () => {
 
   const calculateRoute = async (position) => {
     const directionsService = new window.google.maps.DirectionsService();
+
     clearRoute();
     const results = await directionsService.route({
       origin: center,
@@ -126,12 +122,12 @@ const Map = () => {
           zoom={11}
           onLoad={() => setMap(map)}
         >
-          {!directions && <Marker position={center} />}
+          <MarkerF position={center} />
           {fitHubLocations &&
             fitHubLocations.map((fitHubLocation) => {
               const fitHubPosition = getLatLong(fitHubLocation);
               return (
-                <Marker
+                <MarkerF
                   key={fitHubLocation.id}
                   position={fitHubPosition}
                   onClick={() => calculateRoute(fitHubPosition)}
@@ -148,7 +144,12 @@ const Map = () => {
                 />
               );
             })}
-          {directions && <DirectionsRenderer directions={directions} />}
+          {directions && (
+            <DirectionsRenderer
+              directions={directions}
+              options={{ suppressMarkers: true }}
+            />
+          )}
         </GoogleMap>
       ) : (
         <div>nup</div>
