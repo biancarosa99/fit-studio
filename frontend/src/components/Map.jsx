@@ -4,7 +4,6 @@ import {
   useJsApiLoader,
   MarkerF,
   DirectionsRenderer,
-  Marker,
 } from "@react-google-maps/api";
 import axios from "axios";
 import "../styles/Map.css";
@@ -21,15 +20,16 @@ const Map = () => {
   const [map, setMap] = useState(null);
   const [fitHubLocations, setFitHubLocations] = useState([]);
   const [directions, setDirections] = useState(null);
-  const [distance, setDistance] = useState("");
-  const [duration, setDuration] = useState("");
+  const [setDistance] = useState("");
+  const [setDuration] = useState("");
 
-  const { isLoaded, loadError } = useJsApiLoader({
+  const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
   });
 
   useEffect(() => {
     getUserLocation();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const Map = () => {
         geolocationOptions
       );
     } else {
-      // code for legacy browsers
+      // code for user not enabled geolocaton permission
     }
   };
 
@@ -121,6 +121,7 @@ const Map = () => {
           center={center}
           zoom={11}
           onLoad={() => setMap(map)}
+          options={{ disableDefaultUI: true }}
         >
           <MarkerF position={center} />
           {fitHubLocations &&
