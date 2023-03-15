@@ -67,12 +67,14 @@ export const createLocation = async (
   if (!lng)
     return res.status(400).json("Please choose a location from the list");
 
+  const latitude = Number(lat);
+  const longitude = Number(lng);
   try {
     const location = myDataSource.getRepository(Location).create({
       name,
       address,
-      lat,
-      lng,
+      lat: latitude,
+      lng: longitude,
     });
     const result = await location.save();
     return res.json(result);
