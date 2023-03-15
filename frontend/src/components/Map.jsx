@@ -11,7 +11,7 @@ import "../styles/Map.css";
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_API_KEY;
 
 const containerStyle = {
-  width: "700px",
+  width: "100%",
   height: "500px",
 };
 
@@ -20,8 +20,8 @@ const Map = () => {
   const [map, setMap] = useState(null);
   const [fitHubLocations, setFitHubLocations] = useState([]);
   const [directions, setDirections] = useState(null);
-  const [setDistance] = useState("");
-  const [setDuration] = useState("");
+  const [distance, setDistance] = useState("");
+  const [duration, setDuration] = useState("");
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
