@@ -17,7 +17,7 @@ const LocationCard = () => {
     },
   };
   return (
-    <Card sx={{ maxWidth: 345, height: 500 }}>
+    <Card sx={{ maxWidth: 445, height: 500 }}>
       <CardMedia
         component="img"
         alt="fithub-lication-img"

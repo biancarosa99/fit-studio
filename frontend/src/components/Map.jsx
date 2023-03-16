@@ -114,7 +114,7 @@ const Map = () => {
   };
 
   return (
-    <div className="map-container">
+    <div>
       {isLoaded ? (
         <GoogleMap
           mapContainerStyle={containerStyle}
