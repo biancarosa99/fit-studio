@@ -1,0 +1,11 @@
+.bottom-card-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 70px;
+}
+
+.bottom-card-column {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+}
