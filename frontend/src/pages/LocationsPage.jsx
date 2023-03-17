@@ -1,16 +1,16 @@
 import { Grid } from "@mui/material";
 import React from "react";
 import Map from "../components/Map";
-import LocationCard from "../components/LocationCard";
 import "../styles/LocationsPage.css";
+import LocationsCarousel from "../components/LocationsCarousel";
 
 const LocationsPage = () => {
   return (
     <div style={{ padding: "50px" }}>
-      <Grid container spacing={3}>
+      <Grid container spacing={5}>
         <Grid item xs={12} md={4}>
           <div>
-            <LocationCard />
+            <LocationsCarousel />
           </div>
         </Grid>
         <Grid item xs={12} md={8}>
