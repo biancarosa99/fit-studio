@@ -2,7 +2,6 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { fitnessClasses } from "../assets/data";
 import LocationCard from "./LocationCard";
 import "../styles/LocationsCarousel.css";
 
@@ -28,9 +27,9 @@ function SamplePrevArrow(props) {
   );
 }
 
-const LocationsCarousel = () => {
+const LocationsCarousel = ({ fitHubLocations }) => {
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -42,9 +41,15 @@ const LocationsCarousel = () => {
   return (
     <div>
       <Slider {...settings}>
-        {fitnessClasses.map((location, index) => (
-          <LocationCard key={index} />
-        ))}
+        {fitHubLocations &&
+          fitHubLocations.map((location, index) => (
+            <LocationCard
+              key={index}
+              id={location.id}
+              locationName={location.name}
+              locationAddress={location.address}
+            />
+          ))}
       </Slider>
     </div>
   );

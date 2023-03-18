@@ -15,10 +15,9 @@ const containerStyle = {
   height: "500px",
 };
 
-const Map = () => {
+const Map = ({ fitHubLocations }) => {
   const [center, setCenter] = useState({ lat: 45.7488716, lng: 21.2086793 });
   const [map, setMap] = useState(null);
-  const [fitHubLocations, setFitHubLocations] = useState([]);
   const [directions, setDirections] = useState(null);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
@@ -30,18 +29,6 @@ const Map = () => {
   useEffect(() => {
     getUserLocation();
     // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    const getLocations = async () => {
-      try {
-        const res = await axios.get("/location/");
-        setFitHubLocations(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getLocations();
   }, []);
 
   // const onLoad = React.useCallback(function callback(map) {

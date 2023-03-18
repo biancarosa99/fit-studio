@@ -9,7 +9,7 @@ import "../styles/LocationCard.css";
 import "../styles/HomeInfoContainer.css";
 import { Divider } from "@mui/material";
 
-const LocationCard = () => {
+const LocationCard = ({ id, locationName, locationAddress }) => {
   const buttonStyle = {
     color: "#f45b69",
     "&:hover": {
@@ -27,10 +27,10 @@ const LocationCard = () => {
 
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          FitHub1
+          {locationName}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Address: Timisoara, Strada Ion Ionescu, Nr. 15
+          Address: {locationAddress}
         </Typography>
       </CardContent>
 
