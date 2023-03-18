@@ -6,10 +6,12 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import "../styles/LocationCard.css";
-import "../styles/HomeInfoContainer.css";
 import { Divider } from "@mui/material";
+import { useContext } from "react";
+import LocationContext from "../context/LocationContext";
 
-const LocationCard = ({ id, locationName, locationAddress }) => {
+const LocationCard = ({ location }) => {
+  const { setCurrentLocation } = useContext(LocationContext);
   const buttonStyle = {
     color: "#f45b69",
     "&:hover": {
@@ -27,10 +29,10 @@ const LocationCard = ({ id, locationName, locationAddress }) => {
 
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {locationName}
+          {location.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Address: {locationAddress}
+          Address: {location.address}
         </Typography>
       </CardContent>
 
@@ -38,8 +40,14 @@ const LocationCard = ({ id, locationName, locationAddress }) => {
         <Button size="small" sx={buttonStyle}>
           Show directions
         </Button>
-        <Button size="small" sx={buttonStyle}>
-          See schedule
+        <Button
+          size="small"
+          sx={buttonStyle}
+          onClick={() => setCurrentLocation(location)}
+        >
+          <a href="/classesTimetable" style={{ color: "#f45b69" }}>
+            See schedule
+          </a>
         </Button>
       </CardActions>
       <Divider />

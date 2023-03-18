@@ -48,6 +48,7 @@ const LocationsCarousel = ({ fitHubLocations }) => {
               id={location.id}
               locationName={location.name}
               locationAddress={location.address}
+              location={location}
             />
           ))}
       </Slider>
