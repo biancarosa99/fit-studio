@@ -11,13 +11,23 @@ import { useContext } from "react";
 import LocationContext from "../context/LocationContext";
 
 const LocationCard = ({ location }) => {
-  const { setCurrentLocation } = useContext(LocationContext);
+  const {
+    distance,
+    duration,
+    currentDirections,
+    setCurrentLocation,
+    setCurrentDirections,
+  } = useContext(LocationContext);
   const buttonStyle = {
     color: "#f45b69",
     "&:hover": {
       backgroundColor: "#fff8f9",
     },
   };
+
+  const distanceToShow = currentDirections?.name === location.name && distance;
+  const durationToShow = currentDirections?.name === location.name && duration;
+
   return (
     <Card sx={{ maxWidth: 645, height: 480 }}>
       <CardMedia
@@ -37,7 +47,11 @@ const LocationCard = ({ location }) => {
       </CardContent>
 
       <CardActions>
-        <Button size="small" sx={buttonStyle}>
+        <Button
+          size="small"
+          sx={buttonStyle}
+          onClick={() => setCurrentDirections(location)}
+        >
           Show directions
         </Button>
         <Button
@@ -58,13 +72,13 @@ const LocationCard = ({ location }) => {
             <Typography variant="body2" color="text.secondary">
               Distance
             </Typography>
-            <div>2 km</div>
+            <div>{distanceToShow ? distanceToShow : "-"}</div>
           </div>
           <div className="bottom-card-column">
             <Typography variant="body2" color="text.secondary">
               Duration
             </Typography>
-            <div>20 min</div>
+            <div>{durationToShow ? durationToShow : "-"}</div>
           </div>
         </div>
       </CardContent>

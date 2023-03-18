@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   GoogleMap,
   useJsApiLoader,
@@ -7,6 +7,7 @@ import {
 } from "@react-google-maps/api";
 import axios from "axios";
 import "../styles/Map.css";
+import LocationContext from "../context/LocationContext";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -16,11 +17,11 @@ const containerStyle = {
 };
 
 const Map = ({ fitHubLocations }) => {
+  const { currentDirections, setDistance, setDuration } =
+    useContext(LocationContext);
   const [center, setCenter] = useState({ lat: 45.7488716, lng: 21.2086793 });
   const [map, setMap] = useState(null);
   const [directions, setDirections] = useState(null);
-  const [distance, setDistance] = useState("");
-  const [duration, setDuration] = useState("");
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
@@ -30,6 +31,15 @@ const Map = ({ fitHubLocations }) => {
     getUserLocation();
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (currentDirections) {
+      const fitHubPosition = getLatLong(currentDirections);
+      calculateRoute(fitHubPosition);
+    }
+
+    // eslint-disable-next-line
+  }, [currentDirections]);
 
   // const onLoad = React.useCallback(function callback(map) {
   //   const bounds = new window.google.maps.LatLngBounds(center);
