@@ -17,7 +17,7 @@ const containerStyle = {
 };
 
 const Map = ({ fitHubLocations }) => {
-  const { currentDirections, setDistance, setDuration } =
+  const { currentDirections, setCurrentDirections, setDistance, setDuration } =
     useContext(LocationContext);
   const [center, setCenter] = useState({ lat: 45.7488716, lng: 21.2086793 });
   const [map, setMap] = useState(null);
@@ -128,7 +128,7 @@ const Map = ({ fitHubLocations }) => {
                 <MarkerF
                   key={fitHubLocation.id}
                   position={fitHubPosition}
-                  onClick={() => calculateRoute(fitHubPosition)}
+                  onClick={() => setCurrentDirections(fitHubLocation)}
                   label={{
                     text: fitHubLocation.name,
                     color: "#f45b69",
