@@ -5,7 +5,6 @@ import {
   MarkerF,
   DirectionsRenderer,
 } from "@react-google-maps/api";
-import axios from "axios";
 import "../styles/Map.css";
 import LocationContext from "../context/LocationContext";
 
