@@ -7,6 +7,7 @@ import {
 } from "@react-google-maps/api";
 import "../styles/Map.css";
 import LocationContext from "../context/LocationContext";
+import MapControl from "./MapControl";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -83,6 +84,7 @@ const Map = ({ fitHubLocations }) => {
         errorLocationCallback,
         geolocationOptions
       );
+      console.log(navigator);
     } else {
       // code for user not enabled geolocaton permission
     }
@@ -147,6 +149,16 @@ const Map = ({ fitHubLocations }) => {
               options={{ suppressMarkers: true }}
             />
           )}
+          <MapControl position="RIGHT_BOTTOM">
+            <div
+              style={{
+                backgroundColor: "white",
+                marginRight: "10px",
+              }}
+            >
+              hello
+            </div>
+          </MapControl>
         </GoogleMap>
       ) : (
         <div>nup</div>

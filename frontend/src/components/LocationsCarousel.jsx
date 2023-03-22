@@ -47,7 +47,6 @@ const LocationsCarousel = ({ fitHubLocations }) => {
       const index = fitHubLocations?.findIndex(
         (fitHubLocation) => fitHubLocation?.id === currentDirections?.id
       );
-      console.log("index " + index);
       return index !== -1 ? index : 0;
     };
     const slideIndex = findSlideIndex();
@@ -58,7 +57,7 @@ const LocationsCarousel = ({ fitHubLocations }) => {
       <Slider {...settings} ref={slider}>
         {fitHubLocations &&
           fitHubLocations.map((location, index) => (
-            <LocationCard location={location} />
+            <LocationCard key={index} location={location} />
           ))}
       </Slider>
     </div>

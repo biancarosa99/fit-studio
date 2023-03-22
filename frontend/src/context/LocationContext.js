@@ -25,11 +25,11 @@ export const LocationProvider = ({ children }) => {
     }
   }, [currentLocation]);
 
-  useEffect(() => {
-    if (currentDirections) {
-      localStorage.setItem("directions", JSON.stringify(currentDirections));
-    }
-  }, [currentDirections]);
+  // useEffect(() => {
+  //   if (currentDirections) {
+  //     localStorage.setItem("directions", JSON.stringify(currentDirections));
+  //   }
+  // }, [currentDirections]);
 
   return (
     <LocationContext.Provider
