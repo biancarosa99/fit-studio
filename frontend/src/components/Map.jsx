@@ -8,8 +8,8 @@ import {
 import "../styles/Map.css";
 import LocationContext from "../context/LocationContext";
 import MapControl from "./MapControl";
-import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+import NearMeDisabledIcon from "@mui/icons-material/NearMeDisabled";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -44,7 +44,7 @@ const Map = ({ fitHubLocations }) => {
       const fitHubPosition = getLatLong(currentDirections);
       calculateRoute(fitHubPosition);
     }
-
+    console.log(currentDirections);
     // eslint-disable-next-line
   }, [currentDirections, travelMode]);
 
@@ -100,7 +100,7 @@ const Map = ({ fitHubLocations }) => {
   const calculateRoute = async (position) => {
     const directionsService = new window.google.maps.DirectionsService();
 
-    clearRoute();
+    setDirections(null);
     const results = await directionsService.route({
       origin: center,
       destination: position,
@@ -114,8 +114,14 @@ const Map = ({ fitHubLocations }) => {
     setDuration(results.routes[0].legs[0].duration.text);
   };
 
+  const centerMap = () => {
+    map.panTo(center);
+  };
+
   const clearRoute = () => {
     setDirections(null);
+    centerMap();
+    setCurrentDirections(null);
   };
 
   return (
@@ -125,7 +131,7 @@ const Map = ({ fitHubLocations }) => {
           mapContainerStyle={containerStyle}
           center={center}
           zoom={11}
-          onLoad={() => setMap(map)}
+          onLoad={(map) => setMap(map)}
           options={{ disableDefaultUI: true }}
         >
           <MarkerF position={center} />
@@ -156,15 +162,15 @@ const Map = ({ fitHubLocations }) => {
               options={{ suppressMarkers: true }}
             />
           )}
-          <MapControl position="LEFT_BOTTOM">
-            <div
-              style={{
-                backgroundColor: "white",
-                marginLeft: "20px",
-              }}
-            >
-              <DirectionsWalkIcon />
-              <GpsFixedIcon />
+          <MapControl position="RIGHT_BOTTOM">
+            {directions && (
+              <div className="map-control-button" onClick={clearRoute}>
+                <NearMeDisabledIcon fontSize="small" />
+              </div>
+            )}
+
+            <div className="map-control-button" onClick={centerMap}>
+              <GpsFixedIcon fontSize="small" />
             </div>
           </MapControl>
         </GoogleMap>
