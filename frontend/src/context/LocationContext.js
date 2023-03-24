@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { TRAVEL_MODES } from "../assets/GoogleMapsTravelModes";
 
 const LocationContext = createContext(null);
 
@@ -18,6 +19,7 @@ export const LocationProvider = ({ children }) => {
   const [currentDirections, setCurrentDirections] = useState(null);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
+  const [travelMode, setTravelMode] = useState(TRAVEL_MODES.DRIVING);
 
   useEffect(() => {
     if (currentLocation) {
@@ -42,6 +44,8 @@ export const LocationProvider = ({ children }) => {
         setDistance,
         duration,
         setDuration,
+        travelMode,
+        setTravelMode,
       }}
     >
       {children}

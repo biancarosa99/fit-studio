@@ -1,14 +1,15 @@
 import * as React from "react";
+import "../styles/LocationCard.css";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import "../styles/LocationCard.css";
 import { Divider } from "@mui/material";
 import { useContext } from "react";
 import LocationContext from "../context/LocationContext";
+import TravelModeButtons from "./TravelModeButtons";
 
 const LocationCard = ({ location }) => {
   const {
@@ -25,24 +26,25 @@ const LocationCard = ({ location }) => {
     },
   };
 
-  const distanceToShow = currentDirections?.name === location.name && distance;
-  const durationToShow = currentDirections?.name === location.name && duration;
+  const distanceToShow = currentDirections?.name === location?.name && distance;
+  const durationToShow = currentDirections?.name === location?.name && duration;
+  const showActiveButton = currentDirections?.name === location?.name;
 
   return (
     <Card sx={{ maxWidth: 645, height: 480 }}>
       <CardMedia
         component="img"
         alt="fithub-lication-img"
-        height="260"
+        height="210"
         image={require("../assets/women-fitness.jpg")}
       />
 
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {location.name}
+          {location?.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Address: {location.address}
+          Address: {location?.address}
         </Typography>
       </CardContent>
 
@@ -81,6 +83,12 @@ const LocationCard = ({ location }) => {
             <div>{durationToShow ? durationToShow : "-"}</div>
           </div>
         </div>
+      </CardContent>
+
+      <Divider />
+
+      <CardContent>
+        <TravelModeButtons showActiveButton={showActiveButton} />
       </CardContent>
     </Card>
   );

@@ -8,6 +8,8 @@ import {
 import "../styles/Map.css";
 import LocationContext from "../context/LocationContext";
 import MapControl from "./MapControl";
+import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
+import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -17,8 +19,13 @@ const containerStyle = {
 };
 
 const Map = ({ fitHubLocations }) => {
-  const { currentDirections, setCurrentDirections, setDistance, setDuration } =
-    useContext(LocationContext);
+  const {
+    currentDirections,
+    setCurrentDirections,
+    setDistance,
+    setDuration,
+    travelMode,
+  } = useContext(LocationContext);
   const [center, setCenter] = useState({ lat: 45.7488716, lng: 21.2086793 });
   const [map, setMap] = useState(null);
   const [directions, setDirections] = useState(null);
@@ -39,7 +46,7 @@ const Map = ({ fitHubLocations }) => {
     }
 
     // eslint-disable-next-line
-  }, [currentDirections]);
+  }, [currentDirections, travelMode]);
 
   // const onLoad = React.useCallback(function callback(map) {
   //   const bounds = new window.google.maps.LatLngBounds(center);
@@ -97,7 +104,7 @@ const Map = ({ fitHubLocations }) => {
     const results = await directionsService.route({
       origin: center,
       destination: position,
-      travelMode: window.google.maps.TravelMode.DRIVING,
+      travelMode: window.google.maps.TravelMode[travelMode],
       provideRouteAlternatives: true,
     });
 
@@ -149,14 +156,15 @@ const Map = ({ fitHubLocations }) => {
               options={{ suppressMarkers: true }}
             />
           )}
-          <MapControl position="RIGHT_BOTTOM">
+          <MapControl position="LEFT_BOTTOM">
             <div
               style={{
                 backgroundColor: "white",
-                marginRight: "10px",
+                marginLeft: "20px",
               }}
             >
-              hello
+              <DirectionsWalkIcon />
+              <GpsFixedIcon />
             </div>
           </MapControl>
         </GoogleMap>

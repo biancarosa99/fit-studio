@@ -1,0 +1,5 @@
+export const TRAVEL_MODES = {
+  WALKING: "WALKING",
+  DRIVING: "DRIVING",
+  BICYCLING: "BICYCLING",
+};
