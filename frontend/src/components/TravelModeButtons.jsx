@@ -10,12 +10,16 @@ const TravelModeButtons = ({ showActiveButton }) => {
   const [activeButton, setActiveButton] = React.useState(travelMode);
 
   const changeTravelModeHandler = (travelModeOption) => {
-    setTravelMode(travelModeOption);
+    if (showActiveButton) {
+      setTravelMode(travelModeOption);
+    }
   };
 
   useEffect(() => {
-    setActiveButton(travelMode);
-  }, [travelMode]);
+    if (showActiveButton) {
+      setActiveButton(travelMode);
+    }
+  }, [travelMode, showActiveButton]);
 
   return (
     <div className="travel-options-container">
