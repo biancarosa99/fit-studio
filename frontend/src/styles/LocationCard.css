@@ -1,0 +1,16 @@
+.bottom-card-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 70px;
+}
+
+.bottom-card-column {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+}
+
+a {
+  text-decoration: none;
+  color: "#f45b69";
+}

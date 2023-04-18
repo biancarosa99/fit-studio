@@ -1,27 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   GoogleMap,
   useJsApiLoader,
   MarkerF,
   DirectionsRenderer,
 } from "@react-google-maps/api";
-import axios from "axios";
 import "../styles/Map.css";
+import LocationContext from "../context/LocationContext";
+import MapControl from "./MapControl";
+import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+import NearMeDisabledIcon from "@mui/icons-material/NearMeDisabled";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_API_KEY;
 
 const containerStyle = {
-  width: "700px",
+  width: "100%",
   height: "500px",
 };
 
-const Map = () => {
+const Map = ({ fitHubLocations }) => {
+  const {
+    currentDirections,
+    setCurrentDirections,
+    setDistance,
+    setDuration,
+    travelMode,
+  } = useContext(LocationContext);
   const [center, setCenter] = useState({ lat: 45.7488716, lng: 21.2086793 });
   const [map, setMap] = useState(null);
-  const [fitHubLocations, setFitHubLocations] = useState([]);
   const [directions, setDirections] = useState(null);
-  const [setDistance] = useState("");
-  const [setDuration] = useState("");
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
@@ -33,16 +40,12 @@ const Map = () => {
   }, []);
 
   useEffect(() => {
-    const getLocations = async () => {
-      try {
-        const res = await axios.get("/location/");
-        setFitHubLocations(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getLocations();
-  }, []);
+    if (currentDirections) {
+      const fitHubPosition = getLatLong(currentDirections);
+      calculateRoute(fitHubPosition);
+    }
+    // eslint-disable-next-line
+  }, [currentDirections, travelMode]);
 
   // const onLoad = React.useCallback(function callback(map) {
   //   const bounds = new window.google.maps.LatLngBounds(center);
@@ -87,7 +90,9 @@ const Map = () => {
         errorLocationCallback,
         geolocationOptions
       );
+      console.log(navigator);
     } else {
+      console.log("You dod not enable geolocation");
       // code for user not enabled geolocaton permission
     }
   };
@@ -95,11 +100,11 @@ const Map = () => {
   const calculateRoute = async (position) => {
     const directionsService = new window.google.maps.DirectionsService();
 
-    clearRoute();
+    setDirections(null);
     const results = await directionsService.route({
       origin: center,
       destination: position,
-      travelMode: window.google.maps.TravelMode.DRIVING,
+      travelMode: window.google.maps.TravelMode[travelMode],
       provideRouteAlternatives: true,
     });
 
@@ -109,18 +114,24 @@ const Map = () => {
     setDuration(results.routes[0].legs[0].duration.text);
   };
 
+  const centerMap = () => {
+    map.panTo(center);
+  };
+
   const clearRoute = () => {
     setDirections(null);
+    centerMap();
+    setCurrentDirections(null);
   };
 
   return (
-    <div className="map-container">
+    <div>
       {isLoaded ? (
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
           zoom={11}
-          onLoad={() => setMap(map)}
+          onLoad={(map) => setMap(map)}
           options={{ disableDefaultUI: true }}
         >
           <MarkerF position={center} />
@@ -131,7 +142,7 @@ const Map = () => {
                 <MarkerF
                   key={fitHubLocation.id}
                   position={fitHubPosition}
-                  onClick={() => calculateRoute(fitHubPosition)}
+                  onClick={() => setCurrentDirections(fitHubLocation)}
                   label={{
                     text: fitHubLocation.name,
                     color: "#f45b69",
@@ -151,6 +162,17 @@ const Map = () => {
               options={{ suppressMarkers: true }}
             />
           )}
+          <MapControl position="RIGHT_BOTTOM">
+            {directions && (
+              <div className="map-control-button" onClick={clearRoute}>
+                <NearMeDisabledIcon fontSize="small" />
+              </div>
+            )}
+
+            <div className="map-control-button" onClick={centerMap}>
+              <GpsFixedIcon fontSize="small" />
+            </div>
+          </MapControl>
         </GoogleMap>
       ) : (
         <div>nup</div>

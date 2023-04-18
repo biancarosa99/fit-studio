@@ -1,0 +1,7 @@
+/* .slick-slide > div {
+  padding: 10px;
+} */
+.slick-slide > div {
+  padding: 10px;
+  margin: 0;
+}

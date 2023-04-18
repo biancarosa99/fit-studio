@@ -1,14 +1,14 @@
 import React from "react";
 import FitnessClassesCarousel from "../components/FitnessClassesCarousel";
 import HomeInfoContainer from "../components/HomeInfoContainer";
-import Map from "../components/Map";
+import FitHubLocationsMap from "./FitHubLocationsMap";
 
 const HomePage = () => {
   return (
     <React.Fragment>
       <HomeInfoContainer />
       <FitnessClassesCarousel />
-      <Map />
+      <FitHubLocationsMap />
     </React.Fragment>
   );
 };

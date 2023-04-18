@@ -25,7 +25,7 @@ function App() {
         <div className="app">
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/classesTimetable" element={<SchedulerPage />}></Route>
+            <Route path="/classesTimetable" element={<SchedulerPage />} />
             <Route
               path="/trainerclasses/:time"
               element={
@@ -33,7 +33,7 @@ function App() {
                   <TrainerClassesPage />
                 </ProtectedRoute>
               }
-            ></Route>
+            />
             <Route
               path="/myplans/:time"
               element={
@@ -41,7 +41,7 @@ function App() {
                   <UserPlansPage />
                 </ProtectedRoute>
               }
-            ></Route>
+            />
             <Route
               path="/admin"
               element={
@@ -49,7 +49,7 @@ function App() {
                   <AdminPage />
                 </ProtectedRoute>
               }
-            ></Route>
+            />
           </Routes>
         </div>
         <Footer />
