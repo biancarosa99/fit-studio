@@ -44,7 +44,6 @@ const Map = ({ fitHubLocations }) => {
       const fitHubPosition = getLatLong(currentDirections);
       calculateRoute(fitHubPosition);
     }
-    console.log(currentDirections);
     // eslint-disable-next-line
   }, [currentDirections, travelMode]);
 
@@ -93,6 +92,7 @@ const Map = ({ fitHubLocations }) => {
       );
       console.log(navigator);
     } else {
+      console.log("You dod not enable geolocation");
       // code for user not enabled geolocaton permission
     }
   };
