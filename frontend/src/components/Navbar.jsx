@@ -122,11 +122,6 @@ const Navbar = () => {
               PLANS
             </a>
           </li>
-          <li className="menu-item">
-            <a className="anchor" href="/locations">
-              LOCATIONS
-            </a>
-          </li>
           <li className={adminLoggedInClasses}>
             <a className="anchor" href="/admin">
               ADMIN
@@ -176,11 +171,6 @@ const Navbar = () => {
             <li className="menu-item">
               <a className="anchor-mobile" href="/classesTimetable">
                 PLANS
-              </a>
-            </li>
-            <li className="menu-item">
-              <a className="anchor-mobile" href="/locations">
-                LOCATIONS
               </a>
             </li>
             <li className={adminLoggedInClasses}>

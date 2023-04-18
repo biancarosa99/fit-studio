@@ -1,11 +1,11 @@
 import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Map from "../components/Map";
-import "../styles/LocationsPage.css";
+import "../styles/FitHubLocationsMap.css";
 import LocationsCarousel from "../components/LocationsCarousel";
 import axios from "axios";
 
-const LocationsPage = () => {
+const FitHubLocationsMap = () => {
   const [fitHubLocations, setFitHubLocations] = useState([]);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const LocationsPage = () => {
   }, []);
 
   return (
-    <div style={{ padding: "50px" }}>
+    <div className="fithub-locations-map-grid-container">
       <Grid container spacing={5}>
         <Grid item xs={12} md={4}>
           <div>
@@ -36,4 +36,4 @@ const LocationsPage = () => {
   );
 };
 
-export default LocationsPage;
+export default FitHubLocationsMap;

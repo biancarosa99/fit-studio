@@ -3,3 +3,8 @@
   align-items: center;
   justify-content: center;
 }
+
+.fithub-locations-map-grid-container {
+  padding: 50px;
+  margin-top: 4rem;
+}

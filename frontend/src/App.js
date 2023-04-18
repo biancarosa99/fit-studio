@@ -12,7 +12,6 @@ import "./App.css";
 import { LocationProvider } from "./context/LocationContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminPage from "./pages/admin/AdminPage";
-import LocationsPage from "./pages/LocationsPage";
 
 axios.defaults.baseURL = "http://localhost:3000";
 
@@ -27,7 +26,6 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/classesTimetable" element={<SchedulerPage />} />
-            <Route path="/locations" element={<LocationsPage />} />
             <Route
               path="/trainerclasses/:time"
               element={
