@@ -6,6 +6,20 @@ import { myDataSource } from "../app-data-source";
 import { AuthenticatedRequest } from "../middleware/verifyToken";
 import User from "../entities/User";
 
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: "dctww6uyo",
+  api_key: "427827292845218",
+  api_secret: "19rO4Eo2jw7G6Q0GNBuZ1ofxq5U",
+});
+
+const opts = {
+  overwrite: true,
+  invalidate: true,
+  resource_type: "auto",
+};
+
 export const getAllUsers = async (req: AuthenticatedRequest, res: Response) => {
   const { tkUser } = req;
 
@@ -49,7 +63,7 @@ export const createLocation = async (
   req: AuthenticatedRequest,
   res: Response
 ) => {
-  const { name, address, lat, lng } = req.body;
+  const { name, address, lat, lng, imageUrl } = req.body;
   const { tkUser } = req;
 
   if (!tkUser.isAdmin)
@@ -67,17 +81,25 @@ export const createLocation = async (
   if (!lng)
     return res.status(400).json("Please choose a location from the list");
 
+  if (!imageUrl) return res.status(400).json("Please upload an image");
+
   const latitude = Number(lat);
   const longitude = Number(lng);
   try {
-    const location = myDataSource.getRepository(Location).create({
-      name,
-      address,
-      lat: latitude,
-      lng: longitude,
-    });
-    const result = await location.save();
-    return res.json(result);
+    const uploadedImage = await cloudinary.uploader.upload(imageUrl, opts);
+    if (uploadedImage && uploadedImage.secure_url) {
+      const location = myDataSource.getRepository(Location).create({
+        name,
+        address,
+        lat: latitude,
+        lng: longitude,
+        imageUrl: uploadedImage.secure_url,
+      });
+      const result = await location.save();
+      return res.json(result);
+    } else {
+      return res.status(500).json("Could not upload image to Cloudinary");
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
@@ -88,7 +110,7 @@ export const createFitnessClass = async (
   req: AuthenticatedRequest,
   res: Response
 ) => {
-  const { name, description, duration, level, imgURL } = req.body;
+  const { name, description, duration, level } = req.body;
   const { tkUser } = req;
 
   console.log(tkUser);
@@ -104,7 +126,6 @@ export const createFitnessClass = async (
       description,
       duration,
       level,
-      imgURL,
     });
     const result = await fitnessClass.save();
     return res.json(result);

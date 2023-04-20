@@ -4,6 +4,7 @@ import { myDataSource } from "./app-data-source";
 import * as dotenv from "dotenv";
 dotenv.config();
 const app = express();
+const bodyParser = require("body-parser");
 
 import authRoutes = require("./controllers/AuthController");
 import userRoutes = require("./controllers/UserController");
@@ -17,8 +18,11 @@ import fitnessClassRoutes = require("./controllers/FitnessClassController");
 myDataSource
   .initialize()
   .then(() => {
-    app.use(express.json());
     app.use(cors({ origin: "*", optionSuccessStatus: 200 }));
+
+    app.use(bodyParser.json({ limit: "50mb" }));
+    app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+    app.use(express.json());
 
     app.use(authRoutes);
     app.use(userRoutes);

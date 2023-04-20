@@ -30,6 +30,11 @@ export default class Location extends BaseEntity {
   })
   lng: number;
 
+  @Column({
+    nullable: true,
+  })
+  imageUrl: string;
+
   @OneToMany(
     () => ScheduledClass,
     (scheduledClass) => scheduledClass.location,
