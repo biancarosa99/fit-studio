@@ -9,7 +9,8 @@ import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import "../../styles/AddLocation.css";
-import { FormControl } from "@mui/material";
+import { Button, FormControl } from "@mui/material";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import axios from "axios";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthContext";
@@ -42,6 +43,7 @@ export default function GoogleMaps() {
     lng: null,
   });
   const [locationName, setLocationName] = React.useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
@@ -119,18 +121,37 @@ export default function GoogleMaps() {
     setTimeout(() => setIsSnackbarOpen(false), 6000);
   };
 
+  const convertBase64 = (file) => {
+    if (file) {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+
+        fileReader.onload = () => {
+          resolve(fileReader.result);
+        };
+
+        fileReader.onerror = (error) => {
+          reject(error);
+        };
+      });
+    }
+  };
+
   const handleAddLocation = async (e) => {
     e.preventDefault();
 
     try {
       const userTk = user.token;
+      const base64 = await convertBase64(imageUrl);
       await axios.post(
         "/admin/location",
         {
           name: locationName,
-          address: value.description,
-          lat: coordinates.lat,
-          lng: coordinates.lng,
+          address: value?.description,
+          lat: coordinates?.lat,
+          lng: coordinates?.lng,
+          imageUrl: base64,
         },
         {
           headers: {
@@ -140,9 +161,10 @@ export default function GoogleMaps() {
       );
       setLocationName("");
       setValue(null);
+      setImageUrl(null);
       openSnackbar("Location added succesfully!", "success");
     } catch (err) {
-      console.log(err.response.data);
+      console.log(err);
       openSnackbar(err.response.data, "error");
     }
   };
@@ -190,7 +212,7 @@ export default function GoogleMaps() {
           id="google-map-demo"
           fullWidth
           getOptionLabel={(option) =>
-            typeof option === "string" ? option : option.description
+            typeof option === "string" ? option : option?.description
           }
           filterOptions={(x) => x}
           options={options}
@@ -259,6 +281,31 @@ export default function GoogleMaps() {
             );
           }}
         />
+        <div className="file-upload-container">
+          {/* Upload File */}
+          <div className="file-upload">
+            <input
+              accept="image/*"
+              type="file"
+              onChange={(event) => setImageUrl(event.target.files[0])}
+            />
+            {/* <button className="file-upload-button">
+              <i>
+                <AddPhotoAlternateIcon fontSize="large" />
+              </i>
+              Upload
+            </button> */}
+          </div>
+        </div>
+        {/* <Button variant="contained" component="label">
+          Upload File
+          <input
+            hidden
+            accept="image/*"
+            type="file"
+            onChange={(event) => setImageUrl(event.target.files[0])}
+          />
+        </Button> */}
         <div className="add-location-button-container">
           <button className="add-location-button">Add location</button>
         </div>

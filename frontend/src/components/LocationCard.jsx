@@ -32,12 +32,21 @@ const LocationCard = ({ location }) => {
 
   return (
     <Card sx={{ maxWidth: 645, height: 480 }}>
-      <CardMedia
-        component="img"
-        alt="fithub-lication-img"
-        height="210"
-        image={require("../assets/women-fitness.jpg")}
-      />
+      {location?.imageUrl ? (
+        <CardMedia
+          component="img"
+          alt="fithub-lication-img"
+          height="210"
+          image={location.imageUrl}
+        />
+      ) : (
+        <CardMedia
+          component="img"
+          alt="fithub-lication-img"
+          height="210"
+          image={require("../assets/women-fitness.jpg")}
+        />
+      )}
 
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
