@@ -48,7 +48,7 @@ const LocationCard = ({ location }) => {
         />
       )}
 
-      <CardContent>
+      <CardContent sx={{ maxHeight: "14%" }}>
         <Typography gutterBottom variant="h5" component="div">
           {location?.name}
         </Typography>

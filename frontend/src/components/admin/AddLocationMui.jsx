@@ -11,6 +11,8 @@ import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import "../../styles/AddLocation.css";
 import { Button, FormControl } from "@mui/material";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import CircularProgress from "@mui/material/CircularProgress";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import axios from "axios";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthContext";
@@ -44,6 +46,8 @@ export default function GoogleMaps() {
   });
   const [locationName, setLocationName] = React.useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [imageFileName, setImageFileName] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
@@ -138,8 +142,18 @@ export default function GoogleMaps() {
     }
   };
 
+  const handleChangeImage = (e) => {
+    setImageUrl(e.target.files[0]);
+    if (e.target.value) {
+      setImageFileName(e.target.files[0].name);
+    } else {
+      setImageFileName(e.target.value);
+    }
+  };
+
   const handleAddLocation = async (e) => {
     e.preventDefault();
+    setIsUploading(true);
 
     try {
       const userTk = user.token;
@@ -161,7 +175,9 @@ export default function GoogleMaps() {
       );
       setLocationName("");
       setValue(null);
-      setImageUrl(null);
+      setImageUrl("");
+      setImageFileName("");
+      setIsUploading(false);
       openSnackbar("Location added succesfully!", "success");
     } catch (err) {
       console.log(err);
@@ -225,7 +241,6 @@ export default function GoogleMaps() {
             setOptions(newValue ? [newValue, ...options] : options);
             setValue(newValue);
             if (newValue) {
-              console.log(newValue?.description);
               getLocationCoordinates(newValue?.description);
             }
           }}
@@ -287,27 +302,21 @@ export default function GoogleMaps() {
             <input
               accept="image/*"
               type="file"
-              onChange={(event) => setImageUrl(event.target.files[0])}
+              className="file-input"
+              onChange={handleChangeImage}
             />
-            {/* <button className="file-upload-button">
-              <i>
-                <AddPhotoAlternateIcon fontSize="large" />
-              </i>
-              Upload
-            </button> */}
+            <div className="upload-file-icon-container">
+              <CloudUploadIcon fontSize="large" />
+              <div>{imageFileName ? imageFileName : "Upload image"}</div>
+            </div>
           </div>
         </div>
-        {/* <Button variant="contained" component="label">
-          Upload File
-          <input
-            hidden
-            accept="image/*"
-            type="file"
-            onChange={(event) => setImageUrl(event.target.files[0])}
-          />
-        </Button> */}
         <div className="add-location-button-container">
-          <button className="add-location-button">Add location</button>
+          {isUploading ? (
+            <CircularProgress />
+          ) : (
+            <button className="add-location-button">Add location</button>
+          )}
         </div>
       </form>
 
