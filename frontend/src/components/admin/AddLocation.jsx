@@ -9,8 +9,7 @@ import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import "../../styles/AddLocation.css";
-import { Button, FormControl } from "@mui/material";
-import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import { FormControl } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import axios from "axios";
@@ -18,6 +17,7 @@ import { useContext } from "react";
 import AuthContext from "../../context/AuthContext";
 import { useState } from "react";
 import SnackBar from "../../UI/SnackBar";
+import { convertBase64 } from "../../utils/utils";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -35,16 +35,35 @@ function loadScript(src, position, id) {
 
 const autocompleteService = { current: null };
 
-export default function GoogleMaps() {
+const locationInputSx = {
+  ".MuiOutlinedInput-notchedOutline": {
+    borderColor: "#f45b69 !important",
+  },
+  label: {
+    color: "#f45b69 !important",
+  },
+  "label.Mui-focused": {
+    color: "#f45b69 !important",
+  },
+  "&:focus label": {
+    color: "#f45b69",
+  },
+  ".MuiFormLabel-focus": {
+    color: "#f45b69 ",
+  },
+};
+
+export default function AddLocation() {
   const { user } = useContext(AuthContext);
-  const [value, setValue] = React.useState(null);
-  const [inputValue, setInputValue] = React.useState("");
-  const [options, setOptions] = React.useState([]);
+
+  const [locationName, setLocationName] = React.useState("");
+  const [locationAddress, setLocationAddress] = React.useState(null);
+  const [addressInputValue, setAddressInputValue] = React.useState("");
+  const [addressOptions, setAddressOptions] = React.useState([]);
   const [coordinates, setCoordinates] = React.useState({
     lat: null,
     lng: null,
   });
-  const [locationName, setLocationName] = React.useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [imageFileName, setImageFileName] = useState("");
   const [isUploading, setIsUploading] = useState(false);
@@ -66,7 +85,7 @@ export default function GoogleMaps() {
     loaded.current = true;
   }
 
-  const fetch = React.useMemo(
+  const fetchAddressOptions = React.useMemo(
     () =>
       debounce((request, callback) => {
         autocompleteService.current.getPlacePredictions(request, callback);
@@ -85,31 +104,31 @@ export default function GoogleMaps() {
       return undefined;
     }
 
-    if (inputValue === "") {
-      setOptions(value ? [value] : []);
+    if (addressInputValue === "") {
+      setAddressOptions(locationAddress ? [locationAddress] : []);
       return undefined;
     }
 
-    fetch({ input: inputValue }, (results) => {
+    fetchAddressOptions({ input: addressInputValue }, (results) => {
       if (active) {
         let newOptions = [];
 
-        if (value) {
-          newOptions = [value];
+        if (locationAddress) {
+          newOptions = [locationAddress];
         }
 
         if (results) {
           newOptions = [...newOptions, ...results];
         }
 
-        setOptions(newOptions);
+        setAddressOptions(newOptions);
       }
     });
 
     return () => {
       active = false;
     };
-  }, [value, inputValue, fetch]);
+  }, [locationAddress, addressInputValue, fetchAddressOptions]);
 
   const getLocationCoordinates = async (value) => {
     const results = await geocodeByAddress(value);
@@ -123,23 +142,6 @@ export default function GoogleMaps() {
     setSnackbarSeverity(status);
     setIsSnackbarOpen(true);
     setTimeout(() => setIsSnackbarOpen(false), 6000);
-  };
-
-  const convertBase64 = (file) => {
-    if (file) {
-      return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(file);
-
-        fileReader.onload = () => {
-          resolve(fileReader.result);
-        };
-
-        fileReader.onerror = (error) => {
-          reject(error);
-        };
-      });
-    }
   };
 
   const handleChangeImage = (e) => {
@@ -157,15 +159,15 @@ export default function GoogleMaps() {
 
     try {
       const userTk = user.token;
-      const base64 = await convertBase64(imageUrl);
+      const convertedImage = await convertBase64(imageUrl);
       await axios.post(
         "/admin/location",
         {
           name: locationName,
-          address: value?.description,
+          address: locationAddress?.description,
           lat: coordinates?.lat,
           lng: coordinates?.lng,
-          imageUrl: base64,
+          imageUrl: convertedImage,
         },
         {
           headers: {
@@ -174,7 +176,7 @@ export default function GoogleMaps() {
         }
       );
       setLocationName("");
-      setValue(null);
+      setLocationAddress(null);
       setImageUrl("");
       setImageFileName("");
       setIsUploading(false);
@@ -185,29 +187,8 @@ export default function GoogleMaps() {
     }
   };
 
-  const locationInputSx = {
-    ".MuiOutlinedInput-notchedOutline": {
-      borderColor: "#f45b69 !important",
-    },
-    label: {
-      color: "#f45b69 !important",
-    },
-    "label.Mui-focused": {
-      color: "#f45b69 !important",
-    },
-    "&:focus label": {
-      color: "#f45b69",
-    },
-    ".MuiFormLabel-focus": {
-      color: "#f45b69 ",
-    },
-  };
-
   return (
     <div className="add-location-container">
-      {/* <div className="add-location-title-container">
-        <h2 className="add-location-title">Add a new location</h2>
-      </div> */}
       <form
         className="add-location-form-container"
         onSubmit={handleAddLocation}
@@ -225,27 +206,29 @@ export default function GoogleMaps() {
           />
         </FormControl>
         <Autocomplete
-          id="google-map-demo"
+          id="google-map-autocomplete"
           fullWidth
           getOptionLabel={(option) =>
             typeof option === "string" ? option : option?.description
           }
           filterOptions={(x) => x}
-          options={options}
+          options={addressOptions}
           autoComplete
           includeInputInList
           filterSelectedOptions
-          value={value}
+          value={locationAddress}
           noOptionsText="No locations"
           onChange={(event, newValue) => {
-            setOptions(newValue ? [newValue, ...options] : options);
-            setValue(newValue);
+            setAddressOptions(
+              newValue ? [newValue, ...addressOptions] : addressOptions
+            );
+            setLocationAddress(newValue);
             if (newValue) {
               getLocationCoordinates(newValue?.description);
             }
           }}
           onInputChange={(event, newInputValue) => {
-            setInputValue(newInputValue);
+            setAddressInputValue(newInputValue);
           }}
           renderInput={(params) => (
             <TextField
@@ -297,7 +280,6 @@ export default function GoogleMaps() {
           }}
         />
         <div className="file-upload-container">
-          {/* Upload File */}
           <div className="file-upload">
             <input
               accept="image/*"

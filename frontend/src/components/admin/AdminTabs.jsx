@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
 import UsersTable from "./UsersTable";
-import AddLocationMui from "./AddLocationMui";
+import AddLocation from "./AddLocation";
 import { useMediaQuery } from "react-responsive";
 
 function TabPanel(props) {
@@ -109,7 +109,7 @@ export default function AdminTabs() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <AddLocationMui />
+        <AddLocation />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <UsersTable />
