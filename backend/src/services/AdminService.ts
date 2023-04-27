@@ -110,7 +110,7 @@ export const createFitnessClass = async (
   req: AuthenticatedRequest,
   res: Response
 ) => {
-  const { name, description, duration, level } = req.body;
+  const { name, description, duration, level, imgUrl } = req.body;
   const { tkUser } = req;
 
   console.log(tkUser);
@@ -120,15 +120,30 @@ export const createFitnessClass = async (
       .status(401)
       .json("You are not authenticated to create a fitness class");
 
+  if (!name) return res.status(400).json("Name cannot be empty");
+
+  if (!description) return res.status(400).json("Description cannot be empty");
+
+  if (!duration) return res.status(400).json("Class duration cannot be empty");
+
+  if (!level) return res.status(400).json("Level cannot be empty");
+
+  if (!imgUrl) return res.status(400).json("Please upload an image");
+
   try {
-    const fitnessClass = myDataSource.getRepository(FitnessClass).create({
-      name,
-      description,
-      duration,
-      level,
-    });
-    const result = await fitnessClass.save();
-    return res.json(result);
+    const uploadedImage = await cloudinary.uploader.upload(imgUrl, opts);
+    if (uploadedImage && uploadedImage.secure_url) {
+      const fitnessClass = myDataSource.getRepository(FitnessClass).create({
+        name,
+        description,
+        duration,
+        level,
+      });
+      const result = await fitnessClass.save();
+      return res.json(result);
+    } else {
+      return res.status(500).json("Could not upload image to Cloudinary");
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
