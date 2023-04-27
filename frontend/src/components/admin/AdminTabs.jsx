@@ -7,6 +7,7 @@ import { Typography } from "@mui/material";
 import UsersTable from "./UsersTable";
 import AddLocation from "./AddLocation";
 import { useMediaQuery } from "react-responsive";
+import AddFitnessClass from "./AddFitnessClass";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -89,6 +90,15 @@ export default function AdminTabs() {
         >
           <Tab
             value={0}
+            label="Manage Users"
+            sx={{
+              "&.Mui-selected": {
+                color: "#f45b69",
+              },
+            }}
+          />
+          <Tab
+            value={1}
             label="Add Location"
             {...a11yProps(1)}
             sx={{
@@ -98,8 +108,8 @@ export default function AdminTabs() {
             }}
           />
           <Tab
-            value={1}
-            label="Manage Users"
+            value={2}
+            label="Add Class"
             sx={{
               "&.Mui-selected": {
                 color: "#f45b69",
@@ -109,10 +119,14 @@ export default function AdminTabs() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <AddLocation />
+        <UsersTable />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <UsersTable />
+        <AddLocation />
+      </TabPanel>
+
+      <TabPanel value={value} index={2}>
+        <AddFitnessClass />
       </TabPanel>
     </Box>
   );

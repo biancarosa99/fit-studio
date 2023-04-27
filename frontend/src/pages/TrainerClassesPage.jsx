@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import AddFitnessClass from "../components/AddFitnessClass";
+import ScheduleFitnessClass from "../components/ScheduleFitnessClass";
 import TrainerClasses from "../components/TrainerClasses";
 import SnackBar from "../UI/SnackBar";
 
@@ -54,7 +54,7 @@ const TrainerClassesPage = () => {
         toggleAddClass={handleToggleAddClass}
       />
       {isAddClassVisible && (
-        <AddFitnessClass
+        <ScheduleFitnessClass
           ref={addClassRef}
           successfulScheduleNewClassHandler={successfulScheduleNewClassHandler}
           unsuccessfulScheduleNewClassHandler={

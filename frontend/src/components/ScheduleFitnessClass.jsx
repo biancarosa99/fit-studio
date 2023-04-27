@@ -21,7 +21,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useYupValidationResolver } from "../validations/YupResolver";
 import { scheduleClassValidationSchema } from "../validations/ScheduleClassValidation";
 
-const AddFitnessClass = forwardRef((props, ref) => {
+const ScheduleFitnessClass = forwardRef((props, ref) => {
   const { user } = useContext(AuthContext);
 
   const [dbLocations, setDbLocations] = useState([]);
@@ -307,4 +307,4 @@ const AddFitnessClass = forwardRef((props, ref) => {
   );
 });
 
-export default AddFitnessClass;
+export default ScheduleFitnessClass;
