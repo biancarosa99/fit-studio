@@ -10,7 +10,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
-import "../styles/AddFitnessClass.css";
+import "../styles/ScheduleFitnessClass.css";
 import axios from "axios";
 import { useEffect } from "react";
 import AuthContext from "../context/AuthContext";

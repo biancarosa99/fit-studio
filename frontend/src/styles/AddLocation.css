@@ -22,7 +22,7 @@
   align-items: center;
   justify-content: center;
   gap: 30px;
-  padding: 1rem;
+  /* padding: 1rem; */
 }
 
 .file-upload-container {

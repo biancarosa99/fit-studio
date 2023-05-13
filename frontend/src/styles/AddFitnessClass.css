@@ -1,78 +1,14 @@
-.add-class-container {
+.add-fitness-class-container {
   margin-top: 50px;
-  padding: 0 10%;
+  /* padding: 0 10%; */
   padding-bottom: 50px;
 }
-.add-class-title-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-.add-class-title {
-  color: #f45b69;
-  font-weight: 500;
-}
-.form-container {
+
+.add-fitness-class-form-container {
   width: 100%;
-  /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 30px;
-}
-
-.input-border {
-  border-color: #f45b69 !important;
-}
-
-.inputLabel {
-  color: #f45b69 !important;
-}
-
-.label {
-  color: #f45b69 !important;
-}
-
-.helper-text {
-  text-transform: initial;
-  font-size: 1rem !important;
-  color: #f45b69 !important;
-}
-
-.myDatePicker fieldset.MuiOutlinedInput-notchedOutline {
-  border-color: #f45b69 !important;
-}
-
-.myDatePicker .Mui-focused fieldset.MuiOutlinedInput-notchedOutline {
-  border-color: #f45b69 !important;
-}
-
-.add-class-button-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-.add-class-button {
-  background-color: #f45b69;
-  color: white;
-  padding: 15px;
-  font-size: 15px;
-  cursor: pointer;
-  border: none;
-  border-radius: 14px;
-  font-weight: 600;
-  transition: all 0.5s ease;
-}
-
-/* .add-class-button:hover {
-  opacity: 0.4;
-} */
-
-@media (hover: hover) and (pointer: fine) {
-  .add-class-button:hover {
-    opacity: 0.4;
-  }
 }

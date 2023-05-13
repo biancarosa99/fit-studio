@@ -182,7 +182,7 @@ export default function AddLocation() {
       setIsUploading(false);
       openSnackbar("Location added succesfully!", "success");
     } catch (err) {
-      console.log(err);
+      setIsUploading(false);
       openSnackbar(err.response.data, "error");
     }
   };

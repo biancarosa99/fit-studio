@@ -138,6 +138,7 @@ export const createFitnessClass = async (
         description,
         duration,
         level,
+        imgURL: uploadedImage.secure_url,
       });
       const result = await fitnessClass.save();
       return res.json(result);
