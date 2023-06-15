@@ -9,6 +9,7 @@ dayjs.extend(isBetween);
 import duration = require("dayjs/plugin/duration");
 dayjs.extend(duration);
 import isSameOrAfter = require("dayjs/plugin/isSameOrAfter");
+
 dayjs.extend(isSameOrAfter);
 
 export const isSubscriptionValid = async (userId, scheduledClassId) => {
@@ -48,14 +49,7 @@ export const isSubscriptionValid = async (userId, scheduledClassId) => {
         ) === true
     );
 
-    const validClassDate = dayjs(now).isSameOrAfter(scheduledClass.date);
-
-    if (validClassDate)
-      return [
-        false,
-        "You cant make an appointment to this class because its in the past!",
-      ];
-    else if (!validSubscription) return [false, "Subscritpion is not valid!"];
+    if (!validSubscription) return [false, "Subscritpion is not valid!"];
     else return [true, "success"];
   } catch (error) {
     console.log(error);
@@ -93,7 +87,7 @@ export const checkSubscriptionDuplicates = async (userId, start_date) => {
   }
 };
 
-export const checkScheduledClassAvailability = async (
+export const isScheduledClassValid = async (
   trainerId,
   locationId,
   fitnessClassId,
@@ -133,7 +127,7 @@ export const checkScheduledClassAvailability = async (
 
     const validTrainerHour = trainerClasses.find(
       (fitnessClass) =>
-        dayjs(fitnessClass.date).isBetween(start, end, "hour", "[]") === true
+        dayjs(fitnessClass.date).isBetween(start, end, "minutes", "[]") === true
     );
 
     if (validTrainerHour)
@@ -144,7 +138,7 @@ export const checkScheduledClassAvailability = async (
 
     const validLocation = locationClasses.find(
       (fitnessClass) =>
-        dayjs(fitnessClass.date).isBetween(start, end, "hour", "[]") === true
+        dayjs(fitnessClass.date).isBetween(start, end, "minutes", "[]") === true
     );
 
     if (validLocation)
@@ -167,5 +161,5 @@ export const checkScheduledClassAvailability = async (
 module.exports = {
   isSubscriptionValid,
   checkSubscriptionDuplicates,
-  checkScheduledClassAvailability,
+  isScheduledClassValid,
 };

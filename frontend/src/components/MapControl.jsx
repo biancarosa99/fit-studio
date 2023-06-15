@@ -1,5 +1,5 @@
-import { useGoogleMap } from "@react-google-maps/api";
 import React, { useEffect, useRef } from "react";
+import { useGoogleMap } from "@react-google-maps/api";
 
 const MapControl = (props) => {
   const map = useGoogleMap();

@@ -33,8 +33,6 @@ function loadScript(src, position, id) {
   position.appendChild(script);
 }
 
-const autocompleteService = { current: null };
-
 const locationInputSx = {
   ".MuiOutlinedInput-notchedOutline": {
     borderColor: "#f45b69 !important",
@@ -85,6 +83,8 @@ export default function AddLocation() {
     loaded.current = true;
   }
 
+  const autocompleteService = { current: null };
+
   const fetchAddressOptions = React.useMemo(
     () =>
       debounce((request, callback) => {
@@ -108,7 +108,6 @@ export default function AddLocation() {
       setAddressOptions(locationAddress ? [locationAddress] : []);
       return undefined;
     }
-
     fetchAddressOptions({ input: addressInputValue }, (results) => {
       if (active) {
         let newOptions = [];
@@ -144,10 +143,12 @@ export default function AddLocation() {
     setTimeout(() => setIsSnackbarOpen(false), 6000);
   };
 
-  const handleChangeImage = (e) => {
+  const handleChangeImage = async (e) => {
     setImageUrl(e.target.files[0]);
     if (e.target.value) {
       setImageFileName(e.target.files[0].name);
+      const convertedImage = await convertBase64(e.target.files[0]);
+      console.log(convertedImage);
     } else {
       setImageFileName(e.target.value);
     }

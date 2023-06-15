@@ -24,7 +24,6 @@ const Register = (props) => {
 
       if (res.status === 200) {
         console.log("User registered succesfully!");
-        console.log(res.data);
         props.handleSucessfullRegister();
       }
     } catch (err) {

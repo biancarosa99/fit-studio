@@ -2,7 +2,7 @@ import { query, Request, Response } from "express";
 import ScheduledClass from "../entities/ScheduledClass";
 import { myDataSource } from "../app-data-source";
 import { AuthenticatedRequest } from "../middleware/verifyToken";
-import { checkScheduledClassAvailability } from "../utils/helperFunctions";
+import { isScheduledClassValid } from "../utils/helperFunctions";
 import * as dayjs from "dayjs";
 dayjs().format();
 import isSameOrAfter = require("dayjs/plugin/isSameOrAfter");
@@ -18,7 +18,7 @@ export const createFitnessClass = async (
   try {
     if (!tkUser.isTrainer) return res.status(401).json("Not a trainer");
 
-    const [valid, errorMessage] = await checkScheduledClassAvailability(
+    const [valid, errorMessage] = await isScheduledClassValid(
       tkUser.id,
       locationId,
       fitnessClassId,

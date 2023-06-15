@@ -72,6 +72,16 @@ export const makeAppointment = async (
         id: scheduledClassId,
       },
     });
+  const now = dayjs();
+
+  const validClassDate = dayjs(now).isSameOrAfter(scheduledClass.date);
+
+  if (validClassDate)
+    return res
+      .status(405)
+      .json(
+        "You cant make an appointment to this class because its in the past!"
+      );
 
   if (appointments_count >= scheduledClass.max_spots)
     return res

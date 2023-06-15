@@ -26,7 +26,11 @@ const Map = ({ fitHubLocations }) => {
     setDuration,
     travelMode,
   } = useContext(LocationContext);
-  const [center, setCenter] = useState({ lat: 45.7488716, lng: 21.2086793 });
+
+  const [currentPosition, setCurrentPosition] = useState({
+    lat: 45.7488716,
+    lng: 21.2086793,
+  });
   const [map, setMap] = useState(null);
   const [directions, setDirections] = useState(null);
 
@@ -48,7 +52,7 @@ const Map = ({ fitHubLocations }) => {
   }, [currentDirections, travelMode]);
 
   // const onLoad = React.useCallback(function callback(map) {
-  //   const bounds = new window.google.maps.LatLngBounds(center);
+  //   const bounds = new window.google.maps.LatLngBounds(currentPosition);
   //   // map.fitBounds(bounds);
 
   //   setMap(map);
@@ -70,11 +74,11 @@ const Map = ({ fitHubLocations }) => {
       lat: Number(position.coords.latitude),
       lng: Number(position.coords.longitude),
     };
-    setCenter(userLocation);
+    setCurrentPosition(userLocation);
   };
 
   const errorLocationCallback = (error) => {
-    console.log("Browser does not support the Geolocation API");
+    alert("Browser does not support the Geolocation API");
   };
 
   const geolocationOptions = {
@@ -90,10 +94,8 @@ const Map = ({ fitHubLocations }) => {
         errorLocationCallback,
         geolocationOptions
       );
-      console.log(navigator);
     } else {
-      console.log("You dod not enable geolocation");
-      // code for user not enabled geolocaton permission
+      alert("Browser does not support geolocation");
     }
   };
 
@@ -102,20 +104,19 @@ const Map = ({ fitHubLocations }) => {
 
     setDirections(null);
     const results = await directionsService.route({
-      origin: center,
+      origin: currentPosition,
       destination: position,
       travelMode: window.google.maps.TravelMode[travelMode],
-      provideRouteAlternatives: true,
+      provideRouteAlternatives: false,
     });
 
     setDirections(results);
-    console.log(results.routes);
     setDistance(results.routes[0].legs[0].distance.text);
     setDuration(results.routes[0].legs[0].duration.text);
   };
 
   const centerMap = () => {
-    map.panTo(center);
+    map.panTo(currentPosition);
   };
 
   const clearRoute = () => {
@@ -129,12 +130,12 @@ const Map = ({ fitHubLocations }) => {
       {isLoaded ? (
         <GoogleMap
           mapContainerStyle={containerStyle}
-          center={center}
+          center={currentPosition}
           zoom={11}
           onLoad={(map) => setMap(map)}
           options={{ disableDefaultUI: true }}
         >
-          <MarkerF position={center} />
+          <MarkerF position={currentPosition} />
           {fitHubLocations &&
             fitHubLocations.map((fitHubLocation) => {
               const fitHubPosition = getLatLong(fitHubLocation);
@@ -175,7 +176,7 @@ const Map = ({ fitHubLocations }) => {
           </MapControl>
         </GoogleMap>
       ) : (
-        <div>nup</div>
+        <div>service not working</div>
       )}
     </div>
   );
