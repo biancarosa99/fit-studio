@@ -51,6 +51,8 @@ const locationInputSx = {
   },
 };
 
+const autocompleteService = { current: null };
+
 export default function AddLocation() {
   const { user } = useContext(AuthContext);
 
@@ -82,8 +84,6 @@ export default function AddLocation() {
 
     loaded.current = true;
   }
-
-  const autocompleteService = { current: null };
 
   const fetchAddressOptions = React.useMemo(
     () =>
