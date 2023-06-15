@@ -51,17 +51,6 @@ const Map = ({ fitHubLocations }) => {
     // eslint-disable-next-line
   }, [currentDirections, travelMode]);
 
-  // const onLoad = React.useCallback(function callback(map) {
-  //   const bounds = new window.google.maps.LatLngBounds(currentPosition);
-  //   // map.fitBounds(bounds);
-
-  //   setMap(map);
-  // }, []);
-
-  // const onUnmount = React.useCallback(function callback(map) {
-  //   setMap(null);
-  // }, []);
-
   const getLatLong = (location) => {
     return {
       lat: Number(location.lat),
@@ -160,7 +149,14 @@ const Map = ({ fitHubLocations }) => {
           {directions && (
             <DirectionsRenderer
               directions={directions}
-              options={{ suppressMarkers: true }}
+              options={{
+                suppressMarkers: true,
+                polylineOptions: {
+                  strokeColor: "#4A89F3",
+                  strokeOpacity: 1.0,
+                  strokeWeight: 5,
+                },
+              }}
             />
           )}
           <MapControl position="RIGHT_BOTTOM">
