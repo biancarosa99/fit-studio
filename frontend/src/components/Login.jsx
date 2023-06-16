@@ -25,8 +25,6 @@ const Login = (props) => {
   });
 
   const handleUserLogin = async (data) => {
-    // console.log(data);
-
     try {
       const res = await axios.post("auth/login", data);
 

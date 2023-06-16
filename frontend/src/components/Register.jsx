@@ -27,7 +27,6 @@ const Register = (props) => {
         props.handleSucessfullRegister();
       }
     } catch (err) {
-      console.log(err.response.data);
       setDbErrors(Object.values(err.response.data));
     }
   };
