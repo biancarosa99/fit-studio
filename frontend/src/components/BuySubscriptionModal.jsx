@@ -23,8 +23,6 @@ const BuySubscriptionModal = (props) => {
     .set("minute", 0)
     .set("second", 0);
 
-  console.log(currentDateToSend);
-
   const subscriptionId = props.subscriptionId;
   const subscriptionName = props.subscriptionName;
   const subscriptionPricing = props.subscriptionPricing;

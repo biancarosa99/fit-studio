@@ -34,7 +34,6 @@ const CancelAppointmentModal = (props) => {
         openErrorSnackbarHandler();
       }
     } catch (err) {
-      console.log(err);
       setSnackbarErrorMessage(err.response.data);
       openErrorSnackbarHandler();
     }

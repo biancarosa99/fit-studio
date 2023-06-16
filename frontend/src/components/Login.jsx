@@ -30,15 +30,11 @@ const Login = (props) => {
 
       if (res.status === 200) {
         setDbErrors("");
-        console.log("User logged in succesfully!");
-        console.log(res.data);
-
         setUser(res.data);
         props.handleSucessfullLogin();
         navigate("/");
       }
     } catch (err) {
-      console.log(err.response.data);
       setDbErrors(err.response.data);
     }
   };

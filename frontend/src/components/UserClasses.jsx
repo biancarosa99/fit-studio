@@ -79,7 +79,6 @@ const UserFutureClasses = forwardRef((props, ref) => {
           Authorization: `Bearer ${userTk}`,
         },
       });
-      console.log(res.data.scheduledAppointments);
       setClasses(res.data.scheduledAppointments);
       if (res.data.scheduledAppointments.length > 0) {
         setTotalPages(Math.ceil(res.data.total / 5));
@@ -97,7 +96,6 @@ const UserFutureClasses = forwardRef((props, ref) => {
   }, [page]);
 
   useEffect(() => {
-    console.log("time changed");
     getClasses();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [time]);

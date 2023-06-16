@@ -1,5 +1,4 @@
 import * as yup from "yup";
-import { useCallback } from "react";
 
 export const userRegisterValidationSchema = yup.object().shape({
   firstName: yup.string().max(24, "First name too long").required("Required"),

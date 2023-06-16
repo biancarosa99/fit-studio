@@ -96,6 +96,7 @@ const UsersTable = () => {
         },
       },
     ],
+    // eslint-disable-next-line
     [activeRowId]
   );
   return (

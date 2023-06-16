@@ -40,7 +40,6 @@ const TrainerClassesPage = () => {
   };
 
   const unsuccessfulScheduleNewClassHandler = (errorMessage) => {
-    console.log("open error snackbar: " + errorMessage);
     setSnackbarMessage(errorMessage);
     setSnackbarSeverity("error");
     setOpenSnackbar(true);

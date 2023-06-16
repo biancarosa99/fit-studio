@@ -147,8 +147,6 @@ export default function AddLocation() {
     setImageUrl(e.target.files[0]);
     if (e.target.value) {
       setImageFileName(e.target.files[0].name);
-      const convertedImage = await convertBase64(e.target.files[0]);
-      console.log(convertedImage);
     } else {
       setImageFileName(e.target.value);
     }

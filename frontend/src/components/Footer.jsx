@@ -20,9 +20,7 @@ const Footer = () => {
     try {
       const res = await axios.get("/location/");
       setLocations(res.data);
-      if (currentLocation) {
-        console.log(currentLocation);
-      } else {
+      if (!currentLocation) {
         setCurrentLocation(res.data[0]);
       }
     } catch (error) {

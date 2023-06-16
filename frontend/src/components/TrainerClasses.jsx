@@ -87,7 +87,6 @@ const TrainerClasses = forwardRef((props, ref) => {
           Authorization: `Bearer ${userTk}`,
         },
       });
-      console.log(res.data);
       setClasses(res.data.scheduledClasses);
       if (res.data.scheduledClasses.length > 0) {
         setTotalPages(Math.ceil(res.data.total / 5));

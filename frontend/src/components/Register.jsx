@@ -23,7 +23,6 @@ const Register = (props) => {
       const res = await axios.post("auth/register", data);
 
       if (res.status === 200) {
-        console.log("User registered succesfully!");
         props.handleSucessfullRegister();
       }
     } catch (err) {

@@ -35,7 +35,6 @@ const FitnessClassesCarousel = () => {
     try {
       const res = await axios.get("/fitnessClass/");
       setDbFitnessClasses(res.data);
-      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
