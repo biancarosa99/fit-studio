@@ -10,6 +10,7 @@ import { Divider } from "@mui/material";
 import { useContext } from "react";
 import LocationContext from "../context/LocationContext";
 import TravelModeButtons from "./TravelModeButtons";
+import { useMediaQuery } from "react-responsive";
 
 const LocationCard = ({ location }) => {
   const {
@@ -26,24 +27,27 @@ const LocationCard = ({ location }) => {
     },
   };
 
+  const isSmallMobile = useMediaQuery({ query: "(max-width: 396px)" });
+
+  const imgHight = isSmallMobile ? "180" : "210";
   const distanceToShow = currentDirections?.name === location?.name && distance;
   const durationToShow = currentDirections?.name === location?.name && duration;
   const showActiveButton = currentDirections?.name === location?.name;
 
   return (
-    <Card sx={{ maxWidth: 645, height: 480 }}>
+    <Card sx={{ height: 480 }}>
       {location?.imageUrl ? (
         <CardMedia
           component="img"
           alt="fithub-lication-img"
-          height="210"
+          height={imgHight}
           image={location.imageUrl}
         />
       ) : (
         <CardMedia
           component="img"
           alt="fithub-lication-img"
-          height="210"
+          height={imgHight}
           image={require("../assets/women-fitness.jpg")}
         />
       )}
