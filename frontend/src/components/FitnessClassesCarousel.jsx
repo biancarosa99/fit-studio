@@ -93,7 +93,9 @@ const FitnessClassesCarousel = () => {
               <div className="card-bottom">
                 <div className="class-description">
                   <h1>
-                    {fitnessClass.name} - {fitnessClass.duration} min
+                    {fitnessClass.name} - {fitnessClass.duration} min{" ("}
+                    {fitnessClass.level}
+                    {")"}
                   </h1>
                   <div>{fitnessClass.description}</div>
                 </div>

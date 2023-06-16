@@ -1,1 +1,6 @@
-export const fitnessClassLevels = ["low", "medium", "high"];
+export const fitnessClassLevels = [
+  "Beginner",
+  "Intermediate",
+  "Advanced",
+  "All levels",
+];

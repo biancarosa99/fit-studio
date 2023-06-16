@@ -35,7 +35,9 @@ const SchedulerPage = () => {
     classLocation,
     classDate,
     classId,
-    classMaxSpots
+    classMaxSpots,
+    classLevel,
+    trainerName
   ) => {
     if (user) {
       setIsAppointmentModalOpen(true);
@@ -45,6 +47,8 @@ const SchedulerPage = () => {
         date: classDate,
         id: classId,
         maxSpots: classMaxSpots,
+        level: classLevel,
+        trainerName,
       };
       setAppointmentDetails(details);
     } else {
@@ -114,6 +118,8 @@ const SchedulerPage = () => {
           classDate={appointmentDetails.date}
           classId={appointmentDetails.id}
           classMaxSpots={appointmentDetails.maxSpots}
+          classDifficulty={appointmentDetails.level}
+          trainerName={appointmentDetails.trainerName}
         />
       )}
 

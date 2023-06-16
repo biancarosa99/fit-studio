@@ -124,6 +124,8 @@ const FitnessScheduler = (props) => {
                     const classId = scheduledClass.id;
                     const classMaxSpots = scheduledClass.max_spots;
                     const classDuration = scheduledClass.fitnessClass.duration;
+                    const classLevel = scheduledClass.fitnessClass.level;
+                    const trainerName = scheduledClass.trainer.firstname;
                     return (
                       <tr key={index}>
                         <td
@@ -140,15 +142,17 @@ const FitnessScheduler = (props) => {
                         <td data-lable="Actions">
                           <button
                             className="join-class-button"
-                            onClick={() =>
+                            onClick={() => {
                               props.openConfirmAppointment(
                                 className,
                                 classLocation,
                                 classDate,
                                 classId,
-                                classMaxSpots
-                              )
-                            }
+                                classMaxSpots,
+                                classLevel,
+                                trainerName
+                              );
+                            }}
                           >
                             Show Details
                           </button>

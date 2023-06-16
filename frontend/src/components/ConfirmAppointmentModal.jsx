@@ -4,6 +4,8 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import SportsGymnasticsOutlinedIcon from "@mui/icons-material/SportsGymnasticsOutlined";
+import FitnessCenterOutlinedIcon from "@mui/icons-material/FitnessCenterOutlined";
 import Modal from "../UI/Modal";
 import { useState } from "react";
 import axios from "axios";
@@ -22,6 +24,8 @@ const ConfirmAppointmentModal = (props) => {
   const classDate = props.classDate;
   const classId = props.classId;
   const classMaxSpots = props.classMaxSpots;
+  const classDificultyLevel = props.classDifficulty;
+  const trainerName = props.trainerName;
 
   const getNumberOfClassOccupiedSpots = async () => {
     try {
@@ -110,6 +114,24 @@ const ConfirmAppointmentModal = (props) => {
                 />
               </div>
               <div className="text"> {classDate}</div>
+            </div>
+
+            <div className="confirm-class-date">
+              <div className="icon date-icon">
+                <SportsGymnasticsOutlinedIcon
+                  sx={{ color: "#f45b69", fontSize: "large" }}
+                />
+              </div>
+              <div className="text"> {trainerName}</div>
+            </div>
+
+            <div className="confirm-class-date">
+              <div className="icon date-icon">
+                <FitnessCenterOutlinedIcon
+                  sx={{ color: "#f45b69", fontSize: "large" }}
+                />
+              </div>
+              <div className="text"> {classDificultyLevel}</div>
             </div>
 
             <div className="confirm-class-date">
