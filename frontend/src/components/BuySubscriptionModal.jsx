@@ -110,7 +110,7 @@ const BuySubscriptionModal = (props) => {
                   sx={{ color: "#f45b69", fontSize: "large" }}
                 />
               </span>
-              <span> Total Amount to pay: {subscriptionPricing} lei</span>
+              <span> Total amount to pay: {subscriptionPricing} lei</span>
             </div>
           </div>
 

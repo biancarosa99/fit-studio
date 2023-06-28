@@ -87,7 +87,7 @@ const UserSubscription = () => {
         </div>
       ) : (
         <div className="no-active-subscription">
-          <h4>No active subscriptions found</h4>
+          <h4>No active subscription found</h4>
         </div>
       )}
     </div>
